@@ -1,0 +1,3 @@
+80000002-0002-ff00-b63f-84710c7967bb|2017-04-02 17:08:53.4961|DEBUG|LiveLesson.WEB.Controllers.HomeController.Index|Method uri:http://localhost:49558/, Client IP: ::1, 
+80000002-0002-ff00-b63f-84710c7967bb|2017-04-02 17:08:53.5541|DEBUG|LiveLesson.WEB.Controllers.HomeController.Index|, With arguments: 
+80000002-0002-ff00-b63f-84710c7967bb|2017-04-02 17:08:53.6277|DEBUG|LiveLesson.WEB.Controllers.HomeController.Index|Perfomance of the method: http://localhost:49558/ is 74 miliseconds
