@@ -12,3 +12,17 @@ D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramew
 D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.csprojResolveAssemblyReference.cache
 D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.dll
 D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.pdb
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\LiveLessons.BLL.dll
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\LiveLessons.BLL.pdb
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\AutoMapper.dll
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\LiveLessons.DAL.dll
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\Ninject.dll
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramework.dll
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\LiveLessons.DAL.pdb
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\LiveLessons.DAL.dll.config
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\AutoMapper.xml
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\Ninject.xml
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramework.xml
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.csprojResolveAssemblyReference.cache
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.dll
+D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.pdb

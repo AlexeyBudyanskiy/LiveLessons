@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -56,13 +56,13 @@ namespace LiveLesson.WEB.Controllers
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            var externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
             return new UserInfoViewModel
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+                LoginProvider = externalLogin?.LoginProvider
             };
         }
 
@@ -85,16 +85,12 @@ namespace LiveLesson.WEB.Controllers
                 return null;
             }
 
-            List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
-
-            foreach (IdentityUserLogin linkedAccount in user.Logins)
-            {
-                logins.Add(new UserLoginInfoViewModel
+            var logins = user.Logins.Select(
+                linkedAccount => new UserLoginInfoViewModel
                 {
                     LoginProvider = linkedAccount.LoginProvider,
                     ProviderKey = linkedAccount.ProviderKey
-                });
-            }
+                }).ToList();
 
             if (user.PasswordHash != null)
             {
@@ -123,7 +119,9 @@ namespace LiveLesson.WEB.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+            var result = await UserManager.ChangePasswordAsync(
+                User.Identity.GetUserId(), 
+                model.OldPassword,
                 model.NewPassword);
             
             if (!result.Succeeded)
@@ -143,7 +141,7 @@ namespace LiveLesson.WEB.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+            var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
 
             if (!result.Succeeded)
             {
@@ -164,23 +162,25 @@ namespace LiveLesson.WEB.Controllers
 
             Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
-            AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
+            var ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
 
-            if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-                && ticket.Properties.ExpiresUtc.HasValue
-                && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
+            if (
+                ticket?.Identity == null 
+                || ticket.Properties?.ExpiresUtc != null 
+                && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow)
             {
                 return BadRequest("External login failure.");
             }
 
-            ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
+            var externalData = ExternalLoginData.FromIdentity(ticket.Identity);
 
             if (externalData == null)
             {
                 return BadRequest("The external login is already associated with an account.");
             }
 
-            IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
+            var result = await UserManager.AddLoginAsync(
+                User.Identity.GetUserId(),
                 new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
             if (!result.Succeeded)
@@ -237,7 +237,7 @@ namespace LiveLesson.WEB.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            var externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
             if (externalLogin == null)
             {
@@ -250,27 +250,27 @@ namespace LiveLesson.WEB.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            ApplicationUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
+            var user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
-            bool hasRegistered = user != null;
+            var hasRegistered = user != null;
 
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                 
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                 var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     OAuthDefaults.AuthenticationType);
-                ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else
             {
                 IEnumerable<Claim> claims = externalLogin.GetClaims();
-                ClaimsIdentity identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
+                var identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
                 Authentication.SignIn(identity);
             }
 
@@ -282,8 +282,7 @@ namespace LiveLesson.WEB.Controllers
         [Route("ExternalLogins")]
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
         {
-            IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
-            List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
+            var descriptions = Authentication.GetExternalAuthenticationTypes();
 
             string state;
 
@@ -297,25 +296,18 @@ namespace LiveLesson.WEB.Controllers
                 state = null;
             }
 
-            foreach (AuthenticationDescription description in descriptions)
+            return descriptions.Select(description => new ExternalLoginViewModel
             {
-                ExternalLoginViewModel login = new ExternalLoginViewModel
+                Name = description.Caption, Url = Url.Route("ExternalLogin", 
+                new
                 {
-                    Name = description.Caption,
-                    Url = Url.Route("ExternalLogin", new
-                    {
-                        provider = description.AuthenticationType,
-                        response_type = "token",
-                        client_id = Startup.PublicClientId,
-                        redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
-                        state = state
-                    }),
-                    State = state
-                };
-                logins.Add(login);
-            }
-
-            return logins;
+                    provider = description.AuthenticationType,
+                    response_type = "token",
+                    client_id = Startup.PublicClientId,
+                    redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri, state
+                }),
+                State = state
+            }).ToList();
         }
 
         // POST api/Account/Register
@@ -328,9 +320,9 @@ namespace LiveLesson.WEB.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            var result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
@@ -357,9 +349,9 @@ namespace LiveLesson.WEB.Controllers
                 return InternalServerError();
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user);
+            var result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -386,10 +378,7 @@ namespace LiveLesson.WEB.Controllers
 
         #region Helpers
 
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager Authentication => Request.GetOwinContext().Authentication;
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
@@ -402,7 +391,7 @@ namespace LiveLesson.WEB.Controllers
             {
                 if (result.Errors != null)
                 {
-                    foreach (string error in result.Errors)
+                    foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error);
                     }
@@ -441,15 +430,9 @@ namespace LiveLesson.WEB.Controllers
 
             public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
             {
-                if (identity == null)
-                {
-                    return null;
-                }
+                var providerKeyClaim = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
-                    || String.IsNullOrEmpty(providerKeyClaim.Value))
+                if (string.IsNullOrEmpty(providerKeyClaim?.Issuer) || string.IsNullOrEmpty(providerKeyClaim.Value))
                 {
                     return null;
                 }
@@ -470,7 +453,7 @@ namespace LiveLesson.WEB.Controllers
 
         private static class RandomOAuthStateGenerator
         {
-            private static RandomNumberGenerator _random = new RNGCryptoServiceProvider();
+            private static readonly RandomNumberGenerator Random = new RNGCryptoServiceProvider();
 
             public static string Generate(int strengthInBits)
             {
@@ -484,7 +467,7 @@ namespace LiveLesson.WEB.Controllers
                 int strengthInBytes = strengthInBits / bitsPerByte;
 
                 byte[] data = new byte[strengthInBytes];
-                _random.GetBytes(data);
+                Random.GetBytes(data);
                 return HttpServerUtility.UrlTokenEncode(data);
             }
         }
