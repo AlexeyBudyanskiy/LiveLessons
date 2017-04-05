@@ -250,13 +250,14 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AppointmentViewModel.cs" />
-    <Compile Include="ViewModels\CourseViewModel.cs" />
-    <Compile Include="ViewModels\CreateAppointmentViewModel.cs" />
-    <Compile Include="ViewModels\CreateCourseViewModel.cs" />
-    <Compile Include="ViewModels\CreateMessageViewModel.cs" />
-    <Compile Include="ViewModels\MessageViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\Appointment\AppointmentViewModel.cs" />
+    <Compile Include="ViewModels\Course\CourseFilter.cs" />
+    <Compile Include="ViewModels\Course\CourseViewModel.cs" />
+    <Compile Include="ViewModels\Appointment\CreateAppointmentViewModel.cs" />
+    <Compile Include="ViewModels\Course\CreateCourseViewModel.cs" />
+    <Compile Include="ViewModels\Message\CreateMessageViewModel.cs" />
+    <Compile Include="ViewModels\Message\MessageViewModel.cs" />
+    <Compile Include="ViewModels\User\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

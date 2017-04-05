@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Http;
 using AutoMapper;
-using LiveLesson.WEB.ViewModels;
+using LiveLesson.WEB.ViewModels.Course;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
-using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -14,15 +12,13 @@ namespace LiveLesson.WEB.Controllers
     public class CourseController : ApiController
     {
         private readonly ICourseService _courseService;
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         private string _testProfileId = "profileId";
 
-        public CourseController(ICourseService courseService, IUserService userService, IMapper mapper)
+        public CourseController(ICourseService courseService, IMapper mapper)
         {
             _courseService = courseService;
-            _userService = userService;
             _mapper = mapper;
         }
 
@@ -30,7 +26,7 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult GetAll()
         {
             var coursesDto = _courseService.GetAll();
-            var coursesViewModel = _mapper.Map<IEnumerable<CourseViewModel>>(coursesDto).ToList();
+            var coursesViewModel = _mapper.Map<IEnumerable<CourseViewModel>>(coursesDto);
 
             return Ok(coursesViewModel);
         }
@@ -45,18 +41,18 @@ namespace LiveLesson.WEB.Controllers
         }
 
         [HttpGet, Route("nearest")]
-        public IHttpActionResult Nearest(double x, double y)
+        public IHttpActionResult Nearest(double coordX, double coordY, int page, int itemsPerPage)
         {
-            var courseDto = _courseService.FindNearest(x,y);
+            var courseDto = _courseService.FindNearest(coordX, coordY, page, itemsPerPage);
             var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
 
             return Ok(courseViewModel);
         }
 
         [HttpGet, Route("search")]
-        public IHttpActionResult Search(double x, double y, string searchString)
+        public IHttpActionResult Search(double coordX, double coordY, string searchString, int page, int itemsPerPage) 
         {
-            var courseDto = _courseService.Search(x, y, searchString);
+            var courseDto = _courseService.Search(coordX, coordY, searchString, page, itemsPerPage);
             var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
 
             return Ok(courseViewModel);
