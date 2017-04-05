@@ -1,11 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LiveLesson.WEB.Models
 {
-    // Models used as parameters to AccountController actions.
-
     public class AddExternalLoginBindingModel
     {
         [Required]
@@ -37,6 +33,14 @@ namespace LiveLesson.WEB.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Age")]
+        public int Age { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

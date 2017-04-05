@@ -15,20 +15,22 @@ namespace LiveLesson.WEB.Controllers
     {
         private readonly ICourseService _courseService;
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
         private string _testProfileId = "profileId";
 
-        public CourseController(ICourseService courseService, IUserService userService)
+        public CourseController(ICourseService courseService, IUserService userService, IMapper mapper)
         {
             _courseService = courseService;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet, Route("")]
         public IHttpActionResult GetAll()
         {
             var coursesDto = _courseService.GetAll();
-            var coursesViewModel = Mapper.Map<IEnumerable<CourseViewModel>>(coursesDto).ToList();
+            var coursesViewModel = _mapper.Map<IEnumerable<CourseViewModel>>(coursesDto).ToList();
 
             return Ok(coursesViewModel);
         }
@@ -37,9 +39,27 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult Get(int id)
         {
                 var courseDto = _courseService.Get(id);
-                var courseViewModel = Mapper.Map<CourseViewModel>(courseDto);
+                var courseViewModel = _mapper.Map<CourseViewModel>(courseDto);
 
                 return Ok(courseViewModel);
+        }
+
+        [HttpGet, Route("nearest")]
+        public IHttpActionResult Nearest(double x, double y)
+        {
+            var courseDto = _courseService.FindNearest(x,y);
+            var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
+
+            return Ok(courseViewModel);
+        }
+
+        [HttpGet, Route("search")]
+        public IHttpActionResult Search(double x, double y, string searchString)
+        {
+            var courseDto = _courseService.Search(x, y, searchString);
+            var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
+
+            return Ok(courseViewModel);
         }
 
         [HttpPost, Route("")]
@@ -47,7 +67,7 @@ namespace LiveLesson.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var courseDto = Mapper.Map<CourseDto>(createCourseViewModel);
+                var courseDto = _mapper.Map<CourseDto>(createCourseViewModel);
                 //var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
@@ -64,7 +84,7 @@ namespace LiveLesson.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var courseDto = Mapper.Map<CourseDto>(createCourseViewModel);
+                var courseDto = _mapper.Map<CourseDto>(createCourseViewModel);
                 //var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 courseDto.Teacher = new UserDto { ProfileId = profileId };

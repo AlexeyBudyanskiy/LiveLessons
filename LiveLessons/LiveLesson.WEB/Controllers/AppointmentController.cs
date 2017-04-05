@@ -13,17 +13,19 @@ namespace LiveLesson.WEB.Controllers
     public class AppointmentController : ApiController
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IMapper _mapper;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService, IMapper mapper)
         {
             _appointmentService = appointmentService;
+            _mapper = mapper;
         }
 
         [HttpGet, Route("")]
         public IHttpActionResult GetAll()
         {
             var appointmentsDto = _appointmentService.GetAll();
-            var appointmentsViewModel = Mapper.Map<IEnumerable<AppointmentViewModel>>(appointmentsDto).ToList();
+            var appointmentsViewModel = _mapper.Map<IEnumerable<AppointmentViewModel>>(appointmentsDto).ToList();
 
             return Ok(appointmentsViewModel);
         }
@@ -32,7 +34,7 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult Get(int id)
         {
             var appointmentDto = _appointmentService.Get(id);
-            var appointmentViewModel = Mapper.Map<AppointmentViewModel>(appointmentDto);
+            var appointmentViewModel = _mapper.Map<AppointmentViewModel>(appointmentDto);
 
             return Ok(appointmentViewModel);
         }
@@ -42,7 +44,7 @@ namespace LiveLesson.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var appointmentDto = Mapper.Map<AppointmentDto>(createAppointmentViewModel);
+                var appointmentDto = _mapper.Map<AppointmentDto>(createAppointmentViewModel);
                 _appointmentService.Create(appointmentDto);
 
                 return StatusCode(HttpStatusCode.Created);
@@ -56,7 +58,7 @@ namespace LiveLesson.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var appointmentDto = Mapper.Map<AppointmentDto>(createAppointmentViewModel);
+                var appointmentDto = _mapper.Map<AppointmentDto>(createAppointmentViewModel);
                 _appointmentService.Edit(appointmentDto);
 
                 return Ok();

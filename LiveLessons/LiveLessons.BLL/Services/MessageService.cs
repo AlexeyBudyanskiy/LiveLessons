@@ -11,16 +11,18 @@ namespace LiveLessons.BLL.Services
     public class MessageService : IMessageService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public MessageService(IUnitOfWork unitOfWork)
+        public MessageService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         
         public MessageDto Get(int id)
         {
             var message = _unitOfWork.Messages.Get(id);
-            var messageDto = Mapper.Map<MessageDto>(message);
+            var messageDto = _mapper.Map<MessageDto>(message);
 
             return messageDto;
         }
@@ -32,7 +34,7 @@ namespace LiveLessons.BLL.Services
                 && (entity.Reciever.Id == userId
                 || entity.Sender.Id == userId));
 
-            var messageDtos = Mapper.Map<List<MessageDto>>(messages);
+            var messageDtos = _mapper.Map<List<MessageDto>>(messages);
 
             return messageDtos;
         }
@@ -44,14 +46,14 @@ namespace LiveLessons.BLL.Services
                 && (mes.Reciever.ProfileId.Equals(profileId)
                 || mes.Sender.ProfileId.Equals(profileId)));
 
-            var messageDtos = Mapper.Map<List<MessageDto>>(messages.ToList());
+            var messageDtos = _mapper.Map<List<MessageDto>>(messages.ToList());
 
             return messageDtos;
         }
 
         public void Create(MessageDto messageDto)
         {
-            var message = Mapper.Map<Message>(messageDto);
+            var message = _mapper.Map<Message>(messageDto);
             message.Course = _unitOfWork.Courses.Get(messageDto.Course.Id);
             message.Reciever = _unitOfWork.Users.Get(messageDto.Reciever.Id);
             message.Sender = _unitOfWork.Users.Find(user => user.ProfileId.Equals(message.Sender.ProfileId)).FirstOrDefault();

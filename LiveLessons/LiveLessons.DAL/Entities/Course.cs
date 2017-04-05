@@ -6,10 +6,12 @@ namespace LiveLessons.DAL.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Address { get; set; }
         public int Rate { get; set; }
         public string Photo { get; set; }
         public decimal Price { get; set; }
+
+        public double CoordX { get; set; }
+        public double CoordY { get; set; }
 
         public virtual User Teacher { get; set; }
         public virtual List<Appointment> Appointments { get; set; }

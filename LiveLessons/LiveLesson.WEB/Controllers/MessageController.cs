@@ -13,23 +13,21 @@ namespace LiveLesson.WEB.Controllers
     public class MessageController : ApiController
     {
         private readonly IMessageService _messageService;
-        private readonly ICourseService _courseService;
-        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
         private string _testProfileId = "profileId";
 
-        public MessageController(IMessageService messageService, ICourseService courseService, IUserService userService)
+        public MessageController(IMessageService messageService, IMapper mapper)
         {
             _messageService = messageService;
-            _courseService = courseService;
-            _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet, Route("{id:int}")]
         public IHttpActionResult Get(int id)
         {
             var messageDto = _messageService.Get(id);
-            var messageViewModel = Mapper.Map<MessageViewModel>(messageDto);
+            var messageViewModel = _mapper.Map<MessageViewModel>(messageDto);
 
             return Ok(messageViewModel);
         }
@@ -40,7 +38,7 @@ namespace LiveLesson.WEB.Controllers
             //var profileId = User.Identity.GetUserId();
             var profileId = _testProfileId;
             var messageDto = _messageService.GetCourseConversation(courseId, profileId);
-            var messageViewModel = Mapper.Map<List<MessageViewModel>>(messageDto);
+            var messageViewModel = _mapper.Map<List<MessageViewModel>>(messageDto);
 
             return Ok(messageViewModel);
         }
@@ -50,7 +48,7 @@ namespace LiveLesson.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var messageDto = Mapper.Map<MessageDto>(createMessageViewModel);
+                var messageDto = _mapper.Map<MessageDto>(createMessageViewModel);
                 //var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 messageDto.Sender = new UserDto {ProfileId = _testProfileId};

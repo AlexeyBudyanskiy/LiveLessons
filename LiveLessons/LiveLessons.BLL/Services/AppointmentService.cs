@@ -12,16 +12,18 @@ namespace LiveLessons.BLL.Services
     public class AppointmentService : IAppointmentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public AppointmentService(IUnitOfWork unitOfWork)
+        public AppointmentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         
         public AppointmentDto Get(int id)
         {
             var appointment = _unitOfWork.Appointments.Get(id);
-            var appointmentDto = Mapper.Map<AppointmentDto>(appointment);
+            var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
 
             return appointmentDto;
         }
@@ -29,14 +31,14 @@ namespace LiveLessons.BLL.Services
         public IEnumerable<AppointmentDto> GetAll()
         {
             var appointments = _unitOfWork.Appointments.GetAll().ToList();
-            var appointmentsDto = Mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+            var appointmentsDto = _mapper.Map<IEnumerable<AppointmentDto>>(appointments);
 
             return appointmentsDto;
         }
 
         public void Create(AppointmentDto appointmentDto)
         {
-            var appointment = Mapper.Map<Appointment>(appointmentDto);
+            var appointment = _mapper.Map<Appointment>(appointmentDto);
             appointment.Course = _unitOfWork.Courses.Get(appointmentDto.Course.Id);
             appointment.Student = _unitOfWork.Users.Get(appointmentDto.Student.Id);
 

@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -16,25 +17,30 @@ using Microsoft.Owin.Security.OAuth;
 using LiveLesson.WEB.Models;
 using LiveLesson.WEB.Providers;
 using LiveLesson.WEB.Results;
+using LiveLessons.BLL.DTO;
+using LiveLessons.BLL.Interfaces;
 
 namespace LiveLesson.WEB.Controllers
 {
-    [Authorize]
-    [RoutePrefix("api/Account")]
+    [System.Web.Http.Authorize]
+    [System.Web.Http.RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private readonly IUserService _userService;
 
         public AccountController()
         {
+            _userService = DependencyResolver.Current.GetService<IUserService>();
         }
 
         public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IUserService userService)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
+            _userService = userService;
         }
 
         public ApplicationUserManager UserManager
@@ -53,7 +59,7 @@ namespace LiveLesson.WEB.Controllers
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("UserInfo")]
+        [System.Web.Http.Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
             var externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
@@ -67,7 +73,7 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // POST api/Account/Logout
-        [Route("Logout")]
+        [System.Web.Http.Route("Logout")]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
@@ -75,7 +81,7 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
-        [Route("ManageInfo")]
+        [System.Web.Http.Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -111,7 +117,7 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
+        [System.Web.Http.Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -133,7 +139,7 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // POST api/Account/SetPassword
-        [Route("SetPassword")]
+        [System.Web.Http.Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -152,7 +158,7 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // POST api/Account/AddExternalLogin
-        [Route("AddExternalLogin")]
+        [System.Web.Http.Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -192,7 +198,7 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // POST api/Account/RemoveLogin
-        [Route("RemoveLogin")]
+        [System.Web.Http.Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -221,10 +227,10 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // GET api/Account/ExternalLogin
-        [OverrideAuthentication]
+        [System.Web.Http.OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
-        [AllowAnonymous]
-        [Route("ExternalLogin", Name = "ExternalLogin")]
+        [System.Web.Http.AllowAnonymous]
+        [System.Web.Http.Route("ExternalLogin", Name = "ExternalLogin")]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
             if (error != null)
@@ -278,8 +284,8 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
-        [AllowAnonymous]
-        [Route("ExternalLogins")]
+        [System.Web.Http.AllowAnonymous]
+        [System.Web.Http.Route("ExternalLogins")]
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             var descriptions = Authentication.GetExternalAuthenticationTypes();
@@ -311,8 +317,8 @@ namespace LiveLesson.WEB.Controllers
         }
 
         // POST api/Account/Register
-        [AllowAnonymous]
-        [Route("Register")]
+        [System.Web.Http.AllowAnonymous]
+        [System.Web.Http.Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -324,18 +330,28 @@ namespace LiveLesson.WEB.Controllers
 
             var result = await UserManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
-                return GetErrorResult(result);
+                var profileId = UserManager.Find(model.Email, model.Password).Id;
+                var userDto = new UserDto
+                {
+                    Name = model.Name,
+                    Age = model.Age,
+                    ProfileId = profileId
+                };
+
+                _userService.Create(userDto);
+
+                return Ok();
             }
 
-            return Ok();
+            return GetErrorResult(result);
         }
 
         // POST api/Account/RegisterExternal
-        [OverrideAuthentication]
+        [System.Web.Http.OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("RegisterExternal")]
+        [System.Web.Http.Route("RegisterExternal")]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
         {
             if (!ModelState.IsValid)
