@@ -11,66 +11,66 @@ namespace LiveLessons.BLL.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
         public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public UserDto Get(int id)
         {
-            var user = _unitOfWork.Users.Get(id);
-            var userDto = _mapper.Map<UserDto>(user);
+            var user = unitOfWork.Users.Get(id);
+            var userDto = mapper.Map<UserDto>(user);
 
             return userDto;
         }
 
         public UserDto GetByProfileId(string profileId)
         {
-            var user = _unitOfWork.Users.Find(entity => entity.ProfileId.Equals(profileId)).FirstOrDefault();
-            var userDto = _mapper.Map<UserDto>(user);
+            var user = unitOfWork.Users.Find(entity => entity.ProfileId.Equals(profileId)).FirstOrDefault();
+            var userDto = mapper.Map<UserDto>(user);
 
             return userDto;
         }
 
         public IEnumerable<UserDto> GetAll()
         {
-            var users = _unitOfWork.Users.GetAll().ToList();
-            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
+            var users = unitOfWork.Users.GetAll().ToList();
+            var usersDto = mapper.Map<IEnumerable<UserDto>>(users);
 
             return usersDto;
         }
 
         public void Create(UserDto userDto)
         {
-            var user = _mapper.Map<User>(userDto);
+            var user = mapper.Map<User>(userDto);
 
-            _unitOfWork.Users.Create(user);
-            _unitOfWork.Save();
+            unitOfWork.Users.Create(user);
+            unitOfWork.Save();
         }
 
         public void Edit(UserDto userDto)
         {
-            var updatingUser = _unitOfWork.Users.Get(userDto.Id);
+            var updatingUser = unitOfWork.Users.Get(userDto.Id);
 
             if (updatingUser == null)
             {
                 throw new EntityNotFoundException($"There is no User with id { userDto.Id } in the database.", "User");
             }
 
-            _mapper.Map(userDto, updatingUser);
+            mapper.Map(userDto, updatingUser);
 
-            _unitOfWork.Users.Update(updatingUser);
-            _unitOfWork.Save();
+            unitOfWork.Users.Update(updatingUser);
+            unitOfWork.Save();
         }
 
         public void Delete(int id)
         {
-            _unitOfWork.Users.Delete(id);
-            _unitOfWork.Save();
+            unitOfWork.Users.Delete(id);
+            unitOfWork.Save();
         }
     }
 }

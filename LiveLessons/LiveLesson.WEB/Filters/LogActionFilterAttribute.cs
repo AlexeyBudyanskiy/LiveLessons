@@ -7,11 +7,11 @@ namespace LiveLesson.WEB.Filters
 {
     public class LogActionFilterAttribute : ActionFilterAttribute
     {
-        private readonly ILogger _logger;
+        private readonly ILogger logger;
 
         public LogActionFilterAttribute()
         {
-            _logger = DependencyResolver.Current.GetService<ILogger>();
+            logger = DependencyResolver.Current.GetService<ILogger>();
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -37,7 +37,7 @@ namespace LiveLesson.WEB.Filters
                 logResult = objParams.Aggregate(logResult, (current, propertyInfo) => current + $"Name: {propertyInfo.Name} | Value: {propertyInfo.GetValue(param.Value)}, ");
             }
 
-            _logger.Debug(logResult);
+            logger.Debug(logResult);
         }
     }
 }

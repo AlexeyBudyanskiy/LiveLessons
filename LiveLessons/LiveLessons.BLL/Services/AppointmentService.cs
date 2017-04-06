@@ -11,44 +11,44 @@ namespace LiveLessons.BLL.Services
 {
     public class AppointmentService : IAppointmentService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
         public AppointmentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
         
         public AppointmentDto Get(int id)
         {
-            var appointment = _unitOfWork.Appointments.Get(id);
-            var appointmentDto = _mapper.Map<AppointmentDto>(appointment);
+            var appointment = unitOfWork.Appointments.Get(id);
+            var appointmentDto = mapper.Map<AppointmentDto>(appointment);
 
             return appointmentDto;
         }
 
         public IEnumerable<AppointmentDto> GetAll()
         {
-            var appointments = _unitOfWork.Appointments.GetAll().ToList();
-            var appointmentsDto = _mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+            var appointments = unitOfWork.Appointments.GetAll().ToList();
+            var appointmentsDto = mapper.Map<IEnumerable<AppointmentDto>>(appointments);
 
             return appointmentsDto;
         }
 
         public void Create(AppointmentDto appointmentDto)
         {
-            var appointment = _mapper.Map<Appointment>(appointmentDto);
-            appointment.Course = _unitOfWork.Courses.Get(appointmentDto.Course.Id);
-            appointment.Student = _unitOfWork.Users.Get(appointmentDto.Student.Id);
+            var appointment = mapper.Map<Appointment>(appointmentDto);
+            appointment.Course = unitOfWork.Courses.Get(appointmentDto.Course.Id);
+            appointment.Student = unitOfWork.Users.Get(appointmentDto.Student.Id);
 
-            _unitOfWork.Appointments.Create(appointment);
-            _unitOfWork.Save();
+            unitOfWork.Appointments.Create(appointment);
+            unitOfWork.Save();
         }
 
         public void Edit(AppointmentDto appointmentDto)
         {
-            var updatingAppointment = _unitOfWork.Appointments.Get(appointmentDto.Id);
+            var updatingAppointment = unitOfWork.Appointments.Get(appointmentDto.Id);
 
             if (updatingAppointment == null)
             {
@@ -57,17 +57,17 @@ namespace LiveLessons.BLL.Services
 
             Mapper.Map(appointmentDto, updatingAppointment);
 
-            updatingAppointment.Course = _unitOfWork.Courses.Get(appointmentDto.Course.Id);
-            updatingAppointment.Student = _unitOfWork.Users.Get(appointmentDto.Student.Id);
+            updatingAppointment.Course = unitOfWork.Courses.Get(appointmentDto.Course.Id);
+            updatingAppointment.Student = unitOfWork.Users.Get(appointmentDto.Student.Id);
 
-            _unitOfWork.Appointments.Update(updatingAppointment);
-            _unitOfWork.Save();
+            unitOfWork.Appointments.Update(updatingAppointment);
+            unitOfWork.Save();
         }
 
         public void Delete(int id)
         {
-            _unitOfWork.Appointments.Delete(id);
-            _unitOfWork.Save();
+            unitOfWork.Appointments.Delete(id);
+            unitOfWork.Save();
         }
     }
 }

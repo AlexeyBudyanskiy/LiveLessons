@@ -27,12 +27,12 @@ namespace LiveLesson.WEB.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
-        private readonly IUserService _userService;
-        private ApplicationUserManager _userManager;
+        private readonly IUserService userService;
+        private ApplicationUserManager userManager;
 
         public AccountController()
         {
-            _userService = DependencyResolver.Current.GetService<IUserService>();
+            userService = DependencyResolver.Current.GetService<IUserService>();
         }
 
         public AccountController(
@@ -42,18 +42,18 @@ namespace LiveLesson.WEB.Controllers
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
-            _userService = userService;
+            this.userService = userService;
         }
 
         public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                userManager = value;
             }
         }
 
@@ -347,7 +347,7 @@ namespace LiveLesson.WEB.Controllers
                     ProfileId = profileId
                 };
 
-                _userService.Create(userDto);
+                userService.Create(userDto);
 
                 return Ok();
             }
@@ -390,10 +390,10 @@ namespace LiveLesson.WEB.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _userManager != null)
+            if (disposing && userManager != null)
             {
-                _userManager.Dispose();
-                _userManager = null;
+                userManager.Dispose();
+                userManager = null;
             }
 
             base.Dispose(disposing);

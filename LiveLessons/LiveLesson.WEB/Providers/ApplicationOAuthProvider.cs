@@ -11,7 +11,7 @@ namespace LiveLesson.WEB.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
-        private readonly string _publicClientId;
+        private readonly string publicClientId;
 
         public ApplicationOAuthProvider(string publicClientId)
         {
@@ -20,7 +20,7 @@ namespace LiveLesson.WEB.Providers
                 throw new ArgumentNullException("publicClientId");
             }
 
-            _publicClientId = publicClientId;
+            this.publicClientId = publicClientId;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -68,7 +68,7 @@ namespace LiveLesson.WEB.Providers
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
-            if (context.ClientId == _publicClientId)
+            if (context.ClientId == publicClientId)
             {
                 var expectedRootUri = new Uri(context.Request.Uri, "/");
 

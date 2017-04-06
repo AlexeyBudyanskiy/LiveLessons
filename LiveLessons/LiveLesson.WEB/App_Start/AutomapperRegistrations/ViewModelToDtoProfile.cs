@@ -1,5 +1,4 @@
 using AutoMapper;
-using LiveLesson.WEB.ViewModels;
 using LiveLesson.WEB.ViewModels.Appointment;
 using LiveLesson.WEB.ViewModels.Course;
 using LiveLesson.WEB.ViewModels.Message;

@@ -11,66 +11,106 @@ using LiveLessons.BLL.Interfaces;
 
 namespace LiveLesson.WEB.Controllers
 {
+    /// <summary>
+    /// Controller for courses manipulations
+    /// </summary>
+    /// <seealso cref="System.Web.Http.ApiController" />
     [RoutePrefix("api/courses")]
     public class CourseController : ApiController
     {
-        private readonly ICourseService _courseService;
-        private readonly IMapper _mapper;
+        private readonly ICourseService courseService;
+        private readonly IMapper mapper;
 
         private string _testProfileId = "profileId";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CourseController"/> class.
+        /// </summary>
+        /// <param name="courseService">The course service.</param>
+        /// <param name="mapper">The mapper.</param>
         public CourseController(ICourseService courseService, IMapper mapper)
         {
-            _courseService = courseService;
-            _mapper = mapper;
+            this.courseService = courseService;
+            this.mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all courses.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Route("")]
         public IHttpActionResult GetAll()
         {
-            var coursesDto = _courseService.GetAll();
-            var coursesViewModel = _mapper.Map<IEnumerable<CourseViewModel>>(coursesDto);
+            var coursesDto = courseService.GetAll();
+            var coursesViewModel = mapper.Map<IEnumerable<CourseViewModel>>(coursesDto);
 
             return Ok(coursesViewModel);
         }
 
+        /// <summary>
+        /// Gets the specified course by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpGet, Route("{id:int}")]
         public IHttpActionResult Get(int id)
         {
-                var courseDto = _courseService.Get(id);
-                var courseViewModel = _mapper.Map<CourseViewModel>(courseDto);
+                var courseDto = courseService.Get(id);
+                var courseViewModel = mapper.Map<CourseViewModel>(courseDto);
 
                 return Ok(courseViewModel);
         }
 
+        /// <summary>
+        /// Get appointments sorted by distance from user. Paginated
+        /// </summary>
+        /// <param name="coordX">User coord x.</param>
+        /// <param name="coordY">User coord y.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="itemsPerPage">Items per page.</param>
+        /// <returns></returns>
         [HttpGet, Route("nearest")]
         public IHttpActionResult Nearest(double coordX, double coordY, int page, int itemsPerPage)
         {
-            var courseDto = _courseService.FindNearest(coordX, coordY, page, itemsPerPage);
-            var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
+            var courseDto = courseService.FindNearest(coordX, coordY, page, itemsPerPage);
+            var courseViewModel = mapper.Map<List<CourseViewModel>>(courseDto);
 
             return Ok(courseViewModel);
         }
 
+        /// <summary>
+        /// Searches courses by some string.
+        /// </summary>
+        /// <param name="coordX">User coord x.</param>
+        /// <param name="coordY">User coord y.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="itemsPerPage">Items per page.</param>
+        /// <param name="searchString">The search string.</param>
+        /// <returns></returns>
         [HttpGet, Route("search")]
-        public IHttpActionResult Search(double coordX, double coordY, string searchString, int page, int itemsPerPage) 
+        public IHttpActionResult Search(double coordX, double coordY, string searchString, int page, int itemsPerPage)
         {
-            var courseDto = _courseService.Search(coordX, coordY, searchString, page, itemsPerPage);
-            var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
+            var courseDto = courseService.Search(coordX, coordY, searchString, page, itemsPerPage);
+            var courseViewModel = mapper.Map<List<CourseViewModel>>(courseDto);
 
             return Ok(courseViewModel);
         }
 
+        /// <summary>
+        /// Creates the specified course.
+        /// </summary>
+        /// <param name="createCourseViewModel">Course view model.</param>
+        /// <returns></returns>
         [HttpPost, Route("")]
         public IHttpActionResult Create(CreateCourseViewModel createCourseViewModel)
         {
             if (ModelState.IsValid)
             {
-                var courseDto = _mapper.Map<CourseDto>(createCourseViewModel);
+                var courseDto = mapper.Map<CourseDto>(createCourseViewModel);
                 // var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
-                _courseService.Create(courseDto);
+                courseService.Create(courseDto);
 
                 return StatusCode(HttpStatusCode.Created);
             }
@@ -78,16 +118,21 @@ namespace LiveLesson.WEB.Controllers
             return BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Edits the specified create course.
+        /// </summary>
+        /// <param name="createCourseViewModel">The create course view model.</param>
+        /// <returns></returns>
         [HttpPut, Route("")]
         public IHttpActionResult Edit(CreateCourseViewModel createCourseViewModel)
         {
             if (ModelState.IsValid)
             {
-                var courseDto = _mapper.Map<CourseDto>(createCourseViewModel);
+                var courseDto = mapper.Map<CourseDto>(createCourseViewModel);
                 // var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
-                _courseService.Edit(courseDto);
+                courseService.Edit(courseDto);
 
                 return StatusCode(HttpStatusCode.Created);
             }
@@ -95,14 +140,24 @@ namespace LiveLesson.WEB.Controllers
             return BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Deletes the specified course.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpDelete, Route("{id:int}")]
         public IHttpActionResult Delete(int id)
         {
-            _courseService.Delete(id);
+            courseService.Delete(id);
 
             return Ok();
         }
 
+        /// <summary>
+        /// Loads the image.
+        /// </summary>
+        /// <param name="file">The image.</param>
+        /// <returns></returns>
         [HttpPost]
         public IHttpActionResult LoadImage(HttpPostedFileBase file)
         {
