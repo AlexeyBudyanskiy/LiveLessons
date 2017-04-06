@@ -54,7 +54,33 @@ namespace LiveLessons.DAL.EF
                 Teacher = user2
             };
 
-            db.Courses.AddRange(new List<Course> { course1, course2 });
+            var course3 = new Course
+            {
+                Id = 2,
+                Name = "Alex Course",
+                Description = "It is an alexCourse!",
+                CoordX = 70,
+                CoordY = 70,
+                Photo = "photo",
+                Price = 10,
+                Rate = 10,
+                Teacher = user2
+            };
+
+            var course4 = new Course
+            {
+                Id = 2,
+                Name = "Digital Course",
+                Description = "It is an digital course!",
+                CoordX = 35,
+                CoordY = 10,
+                Photo = "photo",
+                Price = 10,
+                Rate = 10,
+                Teacher = user2
+            };
+
+            db.Courses.AddRange(new List<Course> { course1, course2, course3, course4 });
             db.SaveChanges();
 
             var appointment1 = new Appointment

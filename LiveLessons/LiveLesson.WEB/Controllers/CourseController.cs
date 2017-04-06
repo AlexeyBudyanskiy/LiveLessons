@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Http;
@@ -30,7 +29,7 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult GetAll()
         {
             var coursesDto = _courseService.GetAll();
-            var coursesViewModel = _mapper.Map<IEnumerable<CourseViewModel>>(coursesDto).ToList();
+            var coursesViewModel = _mapper.Map<IEnumerable<CourseViewModel>>(coursesDto);
 
             return Ok(coursesViewModel);
         }
@@ -45,18 +44,18 @@ namespace LiveLesson.WEB.Controllers
         }
 
         [HttpGet, Route("nearest")]
-        public IHttpActionResult Nearest(double x, double y)
+        public IHttpActionResult Nearest(double coordX, double coordY, int page, int itemsPerPage)
         {
-            var courseDto = _courseService.FindNearest(x,y);
+            var courseDto = _courseService.FindNearest(coordX, coordY, page, itemsPerPage);
             var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
 
             return Ok(courseViewModel);
         }
 
         [HttpGet, Route("search")]
-        public IHttpActionResult Search(double x, double y, string searchString)
+        public IHttpActionResult Search(double coordX, double coordY, string searchString, int page, int itemsPerPage) 
         {
-            var courseDto = _courseService.Search(x, y, searchString);
+            var courseDto = _courseService.Search(coordX, coordY, searchString, page, itemsPerPage);
             var courseViewModel = _mapper.Map<List<CourseViewModel>>(courseDto);
 
             return Ok(courseViewModel);

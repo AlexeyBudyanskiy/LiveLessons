@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using AutoMapper;
 using LiveLesson.WEB.ViewModels;
+using LiveLesson.WEB.ViewModels.User;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
 

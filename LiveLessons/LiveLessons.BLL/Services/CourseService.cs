@@ -56,7 +56,8 @@ namespace LiveLessons.BLL.Services
         public void Create(CourseDto courseDto)
         {
             var course = _mapper.Map<Course>(courseDto);
-            course.Teacher = _unitOfWork.Users.Find(user => user.ProfileId.Equals(courseDto.Teacher.ProfileId)).FirstOrDefault();
+            course.Teacher =
+                _unitOfWork.Users.Find(user => user.ProfileId.Equals(courseDto.Teacher.ProfileId)).FirstOrDefault();
 
             _unitOfWork.Courses.Create(course);
             _unitOfWork.Save();
@@ -68,37 +69,44 @@ namespace LiveLessons.BLL.Services
 
             if (updatingCourse == null)
             {
-                throw new EntityNotFoundException($"There is no Course with id { courseDto.Id } in the database.", "Course");
+                var exceptionMessage = $"There is no Course with id {courseDto.Id} in the database.";
+                throw new EntityNotFoundException(exceptionMessage, "Course");
             }
 
             _mapper.Map(courseDto, updatingCourse);
-            var teacher = _unitOfWork.Users.Find(user => user.ProfileId.Equals(courseDto.Teacher.ProfileId)).FirstOrDefault();
+            var teacher =
+                _unitOfWork.Users.Find(user => user.ProfileId.Equals(courseDto.Teacher.ProfileId)).FirstOrDefault();
             updatingCourse.Teacher = teacher;
 
             _unitOfWork.Courses.Update(updatingCourse);
             _unitOfWork.Save();
         }
 
-        public IEnumerable<CourseDto> FindNearest(double userCoordX, double userCoordY)
+        public IEnumerable<CourseDto> FindNearest(double userCoordX, double userCoordY, int page, int itemsPerPage)
         {
             var courses = _unitOfWork.Courses.GetAll();
-            var orderedCourses = OrderByDistance(courses, userCoordX, userCoordY).ToList();
-
-            var coursesDto = _mapper.Map<IEnumerable<CourseDto>>(orderedCourses);
+            var orderedCourses = OrderByDistance(courses, userCoordX, userCoordY);
+            var paginatedCourses = Paginate(orderedCourses, page, itemsPerPage).ToList();
+            var coursesDto = _mapper.Map<IEnumerable<CourseDto>>(paginatedCourses);
 
             return coursesDto;
         }
 
-        public IEnumerable<CourseDto> Search(double userCoordX, double userCoordY, string searchString)
+        public IEnumerable<CourseDto> Search(
+            double userCoordX,
+            double userCoordY,
+            string searchString,
+            int page,
+            int itemsPerPage)
         {
             var courses = _unitOfWork.Courses.GetAll().Where(
-                x => x.Name.Contains(searchString)
-                     || x.Description.Contains(searchString)
-                     || x.Description.Contains(searchString));
+                x => x.Name.ToLower().Contains(searchString.ToLower())
+                     || x.Description.ToLower().Contains(searchString.ToLower())
+                     || x.Description.ToLower().Contains(searchString.ToLower()));
 
-            var orderedCourses = OrderByDistance(courses, userCoordX, userCoordY).ToList();
-
-            var coursesDto = _mapper.Map<IEnumerable<CourseDto>>(orderedCourses);
+            var orderedCourses = OrderByDistance(courses, userCoordX, userCoordY);
+            var paginatedCourses = Paginate(orderedCourses, page, itemsPerPage).ToList();
+            var coursesDto = _mapper.Map<IEnumerable<CourseDto>>(paginatedCourses);
 
             return coursesDto;
         }
@@ -117,6 +125,13 @@ namespace LiveLessons.BLL.Services
                     + (x.CoordY - userCoordY) * (x.CoordY - userCoordY)));
 
             return orderedCourses;
+        }
+
+        private IQueryable<Course> Paginate(IQueryable<Course> courses, int page, int itemsPerPage)
+        {
+            courses = courses.Skip(page * itemsPerPage).Take(itemsPerPage);
+
+            return courses;
         }
     }
 }

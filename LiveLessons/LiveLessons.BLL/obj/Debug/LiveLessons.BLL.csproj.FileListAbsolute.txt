@@ -42,3 +42,5 @@ D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.BLL\obj
 D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.BLL\obj\Debug\LiveLessons.BLL.pdb
 D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramework.SqlServer.dll
 D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramework.SqlServer.xml
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramework.SqlServer.dll
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.BLL\bin\Debug\EntityFramework.SqlServer.xml
