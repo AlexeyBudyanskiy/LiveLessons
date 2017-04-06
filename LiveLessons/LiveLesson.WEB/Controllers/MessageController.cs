@@ -5,7 +5,6 @@ using AutoMapper;
 using LiveLesson.WEB.ViewModels;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
-using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -51,7 +50,7 @@ namespace LiveLesson.WEB.Controllers
                 var messageDto = _mapper.Map<MessageDto>(createMessageViewModel);
                 //var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
-                messageDto.Sender = new UserDto {ProfileId = _testProfileId};
+                messageDto.Sender = new UserDto {ProfileId = profileId};
                 _messageService.Create(messageDto);
 
                 return StatusCode(HttpStatusCode.Created);

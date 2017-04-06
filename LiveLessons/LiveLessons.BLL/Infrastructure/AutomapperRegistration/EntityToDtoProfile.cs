@@ -8,11 +8,11 @@ namespace LiveLessons.BLL.Infrastructure.AutomapperRegistration
     {
         public EntityToDtoProfile()
         {
-			CreateMap<User, UserDto>();
-			CreateMap<Course, CourseDto>()
-                .BeforeMap((course, dto) => dto.Coord = new Coord{X = course.CoordX, Y = course.CoordY});
+            CreateMap<User, UserDto>();
+            CreateMap<Course, CourseDto>()
+                .BeforeMap((course, dto) => dto.Coord = new Coord { X = course.CoordX, Y = course.CoordY });
             CreateMap<Message, MessageDto>();
-			CreateMap<Appointment, AppointmentDto>();
+            CreateMap<Appointment, AppointmentDto>();
         }
     }
 }

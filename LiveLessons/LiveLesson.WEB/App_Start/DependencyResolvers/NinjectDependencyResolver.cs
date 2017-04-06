@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using AutoMapper;
-using LiveLesson.WEB.AutomapperRegistrations;
 using LiveLessons.BLL.Interfaces;
 using LiveLessons.BLL.Services;
 using Ninject;

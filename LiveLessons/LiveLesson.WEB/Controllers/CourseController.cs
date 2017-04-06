@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Http;
 using AutoMapper;
+using LiveLesson.WEB.Infrastructure;
 using LiveLesson.WEB.ViewModels;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
-using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -14,15 +16,13 @@ namespace LiveLesson.WEB.Controllers
     public class CourseController : ApiController
     {
         private readonly ICourseService _courseService;
-        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         private string _testProfileId = "profileId";
 
-        public CourseController(ICourseService courseService, IUserService userService, IMapper mapper)
+        public CourseController(ICourseService courseService, IMapper mapper)
         {
             _courseService = courseService;
-            _userService = userService;
             _mapper = mapper;
         }
 
@@ -100,6 +100,26 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult Delete(int id)
         {
             _courseService.Delete(id);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IHttpActionResult LoadImage(HttpPostedFileBase file)
+        {
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                ImageLoader.SaveImage(file);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
 
             return Ok();
         }

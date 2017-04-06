@@ -1,14 +1,12 @@
-using System;
-using AutoMapper;
+using System.Data.Entity.SqlServer;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Exceptions;
 using LiveLessons.BLL.Interfaces;
 using LiveLessons.DAL.Entities;
 using LiveLessons.DAL.Interfaces;
-using System.Data.Entity.SqlServer;
-using System.Data.Entity.Core.Objects;
 
 namespace LiveLessons.BLL.Services
 {
@@ -93,11 +91,6 @@ namespace LiveLessons.BLL.Services
 
         public IEnumerable<CourseDto> Search(double userCoordX, double userCoordY, string searchString)
         {
-            //var courses = _unitOfWork.Courses.GetAll().Where(
-            //    x => x.Name.IndexOf(searchString, StringComparison.Ordinal) != -1
-            //         || x.Description.IndexOf(searchString, StringComparison.Ordinal) != -1
-            //         || x.Description.IndexOf(searchString, StringComparison.Ordinal) != -1);
-
             var courses = _unitOfWork.Courses.GetAll().Where(
                 x => x.Name.Contains(searchString)
                      || x.Description.Contains(searchString)

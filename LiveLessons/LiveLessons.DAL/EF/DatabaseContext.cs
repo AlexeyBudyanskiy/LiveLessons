@@ -14,13 +14,10 @@ namespace LiveLessons.DAL.EF
         {
         }
 
-		public DbSet<User> Users { get; set; }
-
-		public DbSet<Course> Courses { get; set; }
-
-		public DbSet<Message> Messages { get; set; }
-
-		public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
