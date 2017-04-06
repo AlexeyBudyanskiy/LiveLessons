@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http;
 using AutoMapper;
 using LiveLesson.WEB.Infrastructure;
-using LiveLesson.WEB.ViewModels;
+using LiveLesson.WEB.ViewModels.Course;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
 
@@ -67,7 +67,7 @@ namespace LiveLesson.WEB.Controllers
             if (ModelState.IsValid)
             {
                 var courseDto = _mapper.Map<CourseDto>(createCourseViewModel);
-                //var profileId = User.Identity.GetUserId();
+                // var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
                 _courseService.Create(courseDto);
@@ -84,7 +84,7 @@ namespace LiveLesson.WEB.Controllers
             if (ModelState.IsValid)
             {
                 var courseDto = _mapper.Map<CourseDto>(createCourseViewModel);
-                //var profileId = User.Identity.GetUserId();
+                // var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
                 _courseService.Edit(courseDto);

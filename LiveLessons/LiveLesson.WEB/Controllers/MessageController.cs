@@ -35,7 +35,7 @@ namespace LiveLesson.WEB.Controllers
         [HttpGet, Route("")]
         public IHttpActionResult GetByCourseId(int courseId)
         {
-            //var profileId = User.Identity.GetUserId();
+            // var profileId = User.Identity.GetUserId();
             var profileId = _testProfileId;
             var messageDto = _messageService.GetCourseConversation(courseId, profileId);
             var messageViewModel = _mapper.Map<List<MessageViewModel>>(messageDto);
@@ -49,9 +49,9 @@ namespace LiveLesson.WEB.Controllers
             if (ModelState.IsValid)
             {
                 var messageDto = _mapper.Map<MessageDto>(createMessageViewModel);
-                //var profileId = User.Identity.GetUserId();
+                // var profileId = User.Identity.GetUserId();
                 var profileId = _testProfileId;
-                messageDto.Sender = new UserDto {ProfileId = profileId};
+                messageDto.Sender = new UserDto { ProfileId = profileId };
                 _messageService.Create(messageDto);
 
                 return StatusCode(HttpStatusCode.Created);

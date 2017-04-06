@@ -30,12 +30,11 @@ namespace LiveLesson.WEB.DependencyResolvers
 
         private void AddBindings()
         {
-			_kernel.Bind<IUserService>().To<UserService>();
-			_kernel.Bind<ICourseService>().To<CourseService>();
-			_kernel.Bind<IMessageService>().To<MessageService>();
-			_kernel.Bind<IAppointmentService>().To<AppointmentService>();
+            _kernel.Bind<IUserService>().To<UserService>();
+            _kernel.Bind<ICourseService>().To<CourseService>();
+            _kernel.Bind<IMessageService>().To<MessageService>();
+            _kernel.Bind<IAppointmentService>().To<AppointmentService>();
             _kernel.Bind<IMapper>().ToMethod(x => Mapper.Instance);
-
 
             _kernel.Bind<ILogger>().ToMethod(p =>
             {

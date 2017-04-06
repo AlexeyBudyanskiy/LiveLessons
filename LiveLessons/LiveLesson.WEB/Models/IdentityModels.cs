@@ -23,6 +23,7 @@ namespace LiveLesson.WEB.Models
         }
         
         public static ApplicationDbContext Create()
+        public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }

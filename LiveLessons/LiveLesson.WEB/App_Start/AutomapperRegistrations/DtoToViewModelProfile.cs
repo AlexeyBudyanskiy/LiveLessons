@@ -12,15 +12,10 @@ namespace LiveLesson.WEB.AutomapperRegistrations
     {
         public DtoToViewModelProfile()
         {
-
-			CreateMap<UserDto, UserViewModel>();
-
-			CreateMap<CourseDto, CourseViewModel>();
-
-			CreateMap<MessageDto, MessageViewModel>();
-
-			CreateMap<AppointmentDto, AppointmentViewModel>();
-
+            CreateMap<UserDto, UserViewModel>();
+            CreateMap<CourseDto, CourseViewModel>();
+            CreateMap<MessageDto, MessageViewModel>();
+            CreateMap<AppointmentDto, AppointmentViewModel>();
         }
     }
 }

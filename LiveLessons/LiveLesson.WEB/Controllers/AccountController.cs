@@ -27,16 +27,18 @@ namespace LiveLesson.WEB.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
-        private ApplicationUserManager _userManager;
         private readonly IUserService _userService;
+        private ApplicationUserManager _userManager;
 
         public AccountController()
         {
             _userService = DependencyResolver.Current.GetService<IUserService>();
         }
 
-        public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IUserService userService)
+        public AccountController(
+            ApplicationUserManager userManager,
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, 
+            IUserService userService)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
@@ -214,7 +216,8 @@ namespace LiveLesson.WEB.Controllers
             }
             else
             {
-                result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
+                result = await UserManager.RemoveLoginAsync(
+                    User.Identity.GetUserId(),
                     new UserLoginInfo(model.LoginProvider, model.ProviderKey));
             }
 
@@ -256,8 +259,7 @@ namespace LiveLesson.WEB.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            var user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
-                externalLogin.ProviderKey));
+            var user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
 
             var hasRegistered = user != null;
 
@@ -265,9 +267,11 @@ namespace LiveLesson.WEB.Controllers
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                 
-                 var oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                 var oAuthIdentity = await user.GenerateUserIdentityAsync(
+                     UserManager,
                     OAuthDefaults.AuthenticationType);
-                var cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                var cookieIdentity = await user.GenerateUserIdentityAsync(
+                    UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
                 var properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
@@ -304,14 +308,17 @@ namespace LiveLesson.WEB.Controllers
 
             return descriptions.Select(description => new ExternalLoginViewModel
             {
-                Name = description.Caption, Url = Url.Route("ExternalLogin", 
-                new
-                {
-                    provider = description.AuthenticationType,
-                    response_type = "token",
-                    client_id = Startup.PublicClientId,
-                    redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri, state
-                }),
+                Name = description.Caption,
+                Url = Url.Route(
+                    "ExternalLogin",
+                    new
+                    {
+                        provider = description.AuthenticationType,
+                        response_type = "token",
+                        client_id = Startup.PublicClientId,
+                        redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri,
+                        state
+                    }),
                 State = state
             }).ToList();
         }

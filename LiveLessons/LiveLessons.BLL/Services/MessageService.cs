@@ -1,6 +1,6 @@
-using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
 using LiveLessons.DAL.Entities;

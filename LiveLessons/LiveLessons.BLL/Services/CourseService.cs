@@ -121,8 +121,8 @@ namespace LiveLessons.BLL.Services
         {
             var orderedCourses = courses.OrderBy(
                 x => SqlFunctions.SquareRoot(
-                    (x.CoordX - userCoordX) * (x.CoordX - userCoordX)
-                    + (x.CoordY - userCoordY) * (x.CoordY - userCoordY)));
+                    ((x.CoordX - userCoordX) * (x.CoordX - userCoordX))
+                    + ((x.CoordY - userCoordY) * (x.CoordY - userCoordY))));
 
             return orderedCourses;
         }
