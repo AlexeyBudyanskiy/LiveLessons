@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Http;
 using AutoMapper;
 using LiveLesson.WEB.ViewModels.Appointment;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -17,6 +17,7 @@ namespace LiveLesson.WEB.Controllers
     public class AppointmentController : ApiController
     {
         private readonly IAppointmentService appointmentService;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -24,10 +25,12 @@ namespace LiveLesson.WEB.Controllers
         /// </summary>
         /// <param name="appointmentService">The appointment service.</param>
         /// <param name="mapper">The mapper.</param>
-        public AppointmentController(IAppointmentService appointmentService, IMapper mapper)
+        /// <param name="userService">Injected user service</param>
+        public AppointmentController(IAppointmentService appointmentService, IMapper mapper, IUserService userService)
         {
             this.appointmentService = appointmentService;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
         /// <summary>
@@ -35,10 +38,22 @@ namespace LiveLesson.WEB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("")]
+        [Authorize]
         public IHttpActionResult GetAll()
         {
             var appointmentsDto = appointmentService.GetAll();
-            var appointmentsViewModel = mapper.Map<IEnumerable<AppointmentViewModel>>(appointmentsDto).ToList();
+            var appointmentsViewModel = mapper.Map<IEnumerable<AppointmentViewModel>>(appointmentsDto);
+
+            return Ok(appointmentsViewModel);
+        }
+
+        [HttpGet, Route("my")]
+        [Authorize]
+        public IHttpActionResult Get()
+        {
+            var profileId = User.Identity.GetUserId();
+            var appointmentsDto = appointmentService.GetByProfileId(profileId);
+            var appointmentsViewModel = mapper.Map<IEnumerable<AppointmentViewModel>>(appointmentsDto);
 
             return Ok(appointmentsViewModel);
         }
@@ -49,6 +64,7 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet, Route("{id:int}")]
+        [Authorize]
         public IHttpActionResult Get(int id)
         {
             var appointmentDto = appointmentService.Get(id);
@@ -63,8 +79,16 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="createAppointmentViewModel">The create appointment view model.</param>
         /// <returns></returns>
         [HttpPost, Route("")]
+        [Authorize]
         public IHttpActionResult Create(CreateAppointmentViewModel createAppointmentViewModel)
         {
+            var currentUser = userService.GetByProfileId(User.Identity.GetUserId());
+
+            if (currentUser.Id != createAppointmentViewModel.StudentId)
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
             if (ModelState.IsValid)
             {
                 var appointmentDto = mapper.Map<AppointmentDto>(createAppointmentViewModel);
@@ -82,8 +106,16 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="createAppointmentViewModel">The create appointment view model.</param>
         /// <returns></returns>
         [HttpPut, Route("")]
+        [Authorize]
         public IHttpActionResult Edit(CreateAppointmentViewModel createAppointmentViewModel)
         {
+            var currentUser = userService.GetByProfileId(User.Identity.GetUserId());
+
+            if (currentUser.Id != createAppointmentViewModel.StudentId)
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
             if (ModelState.IsValid)
             {
                 var appointmentDto = mapper.Map<AppointmentDto>(createAppointmentViewModel);
@@ -101,6 +133,7 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete, Route("{id:int}")]
+        [Authorize]
         public IHttpActionResult Delete(int id)
         {
             appointmentService.Delete(id);

@@ -36,6 +36,16 @@ namespace LiveLessons.BLL.Services
             return appointmentsDto;
         }
 
+        public IEnumerable<AppointmentDto> GetByProfileId(string profileId)
+        {
+            var appointments = unitOfWork.Appointments.GetAll().Where(
+                x => x.Student.ProfileId.Equals(profileId) ||
+                     x.Course.Teacher.ProfileId.Equals(profileId));
+            var appointmentsDto = mapper.Map<IEnumerable<AppointmentDto>>(appointments);
+
+            return appointmentsDto;
+        }
+
         public void Create(AppointmentDto appointmentDto)
         {
             var appointment = mapper.Map<Appointment>(appointmentDto);

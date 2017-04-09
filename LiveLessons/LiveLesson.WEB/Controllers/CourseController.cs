@@ -8,6 +8,7 @@ using LiveLesson.WEB.Infrastructure;
 using LiveLesson.WEB.ViewModels.Course;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -20,8 +21,6 @@ namespace LiveLesson.WEB.Controllers
     {
         private readonly ICourseService courseService;
         private readonly IMapper mapper;
-
-        private string _testProfileId = "profileId";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CourseController"/> class.
@@ -42,6 +41,16 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult GetAll()
         {
             var coursesDto = courseService.GetAll();
+            var coursesViewModel = mapper.Map<IEnumerable<CourseViewModel>>(coursesDto);
+
+            return Ok(coursesViewModel);
+        }
+
+        [HttpGet, Route("my")]
+        public IHttpActionResult Get()
+        {
+            var profileId = User.Identity.GetUserId();
+            var coursesDto = courseService.GetByProfileId(profileId);
             var coursesViewModel = mapper.Map<IEnumerable<CourseViewModel>>(coursesDto);
 
             return Ok(coursesViewModel);
@@ -102,13 +111,13 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="createCourseViewModel">Course view model.</param>
         /// <returns></returns>
         [HttpPost, Route("")]
+        [Authorize]
         public IHttpActionResult Create(CreateCourseViewModel createCourseViewModel)
         {
             if (ModelState.IsValid)
             {
                 var courseDto = mapper.Map<CourseDto>(createCourseViewModel);
-                // var profileId = User.Identity.GetUserId();
-                var profileId = _testProfileId;
+                var profileId = User.Identity.GetUserId();
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
                 courseService.Create(courseDto);
 
@@ -124,13 +133,13 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="createCourseViewModel">The create course view model.</param>
         /// <returns></returns>
         [HttpPut, Route("")]
+        [Authorize]
         public IHttpActionResult Edit(CreateCourseViewModel createCourseViewModel)
         {
             if (ModelState.IsValid)
             {
                 var courseDto = mapper.Map<CourseDto>(createCourseViewModel);
-                // var profileId = User.Identity.GetUserId();
-                var profileId = _testProfileId;
+                var profileId = User.Identity.GetUserId();
                 courseDto.Teacher = new UserDto { ProfileId = profileId };
                 courseService.Edit(courseDto);
 
@@ -146,6 +155,7 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpDelete, Route("{id:int}")]
+        [Authorize]
         public IHttpActionResult Delete(int id)
         {
             courseService.Delete(id);
@@ -159,6 +169,7 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="file">The image.</param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         public IHttpActionResult LoadImage(HttpPostedFileBase file)
         {
             if (file == null)

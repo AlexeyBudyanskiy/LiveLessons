@@ -8,7 +8,7 @@ namespace LiveLessons.BLL.Interfaces
         CourseDto Get(int id);
         IEnumerable<CourseDto> GetAll();
         CourseDto GetByUserId(int userId);
-        CourseDto GetByProfileId(string profileId);
+        IEnumerable<CourseDto> GetByProfileId(string profileId);
         IEnumerable<CourseDto> FindNearest(double userCoordX, double userCoordY, int page, int itemsPerPage);
         void Create(CourseDto courseDto);
         void Edit(CourseDto courseDto);

@@ -11,8 +11,8 @@ namespace LiveLessons.BLL.Infrastructure.AutomapperRegistration
             CreateMap<UserDto, User>();
             CreateMap<CourseDto, Course>()
                 .ForMember(x => x.Teacher, options => options.Ignore())
-                .BeforeMap((dto, course) => course.CoordX = dto.Coord.X)
-                .BeforeMap((dto, course) => course.CoordY = dto.Coord.Y);
+                .BeforeMap((dto, course) =>{ course.CoordX = dto.Coord?.X ?? 0; })
+                .BeforeMap((dto, course) => { course.CoordY = dto.Coord?.Y ?? 0; });
             CreateMap<MessageDto, Message>();
             CreateMap<AppointmentDto, Appointment>()
                 .ForMember(x => x.Student, options => options.Ignore())

@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\Coord.cs" />
-    <Compile Include="DTO\FilterDto.cs" />
     <Compile Include="DTO\UserDto.cs" />
     <Compile Include="DTO\CourseDto.cs" />
     <Compile Include="DTO\MessageDto.cs" />
@@ -65,13 +64,6 @@
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\UniqueValueAlreadyExistsException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
-    <Compile Include="Filters\Pipeline.cs" />
-    <Compile Include="Filters\Stages\FilterByPrice.cs" />
-    <Compile Include="Filters\Stages\FilterByRate.cs" />
-    <Compile Include="Filters\Stages\PaginationFilter.cs" />
-    <Compile Include="Filters\Stages\SearchBySubstring.cs" />
-    <Compile Include="Filters\Stages\SortByDistance.cs" />
-    <Compile Include="Filters\Stages\SortByPrice.cs" />
     <Compile Include="Infrastructure\AutomapperRegistration\DtoToEntityProfile.cs" />
     <Compile Include="Infrastructure\AutomapperRegistration\EntityToDtoProfile.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />

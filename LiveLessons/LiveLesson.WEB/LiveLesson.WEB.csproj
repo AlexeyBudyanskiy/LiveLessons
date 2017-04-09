@@ -242,8 +242,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AuthTokenOperation.cs" />
     <Compile Include="Infrastructure\GlobalVaribles.cs" />
     <Compile Include="Infrastructure\ImageLoader.cs" />
+    <Compile Include="Infrastructure\AuthorizationHeaderParameterOperationFilter.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -258,6 +260,7 @@
     <Compile Include="ViewModels\Course\CreateCourseViewModel.cs" />
     <Compile Include="ViewModels\Message\CreateMessageViewModel.cs" />
     <Compile Include="ViewModels\Message\MessageViewModel.cs" />
+    <Compile Include="ViewModels\User\UpdateUserViewModel.cs" />
     <Compile Include="ViewModels\User\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,12 +37,12 @@ namespace LiveLessons.BLL.Services
             return courseDto;
         }
 
-        public CourseDto GetByProfileId(string profileId)
+        public IEnumerable<CourseDto> GetByProfileId(string profileId)
         {
             var course = unitOfWork.Courses.Find(entity => entity.Teacher.ProfileId.Equals(profileId));
-            var courseDto = mapper.Map<CourseDto>(course);
+            var coursesDto = mapper.Map<IEnumerable<CourseDto>>(course);
 
-            return courseDto;
+            return coursesDto;
         }
 
         public IEnumerable<CourseDto> GetAll()

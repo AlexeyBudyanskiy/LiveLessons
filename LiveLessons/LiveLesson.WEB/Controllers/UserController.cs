@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Http;
 using AutoMapper;
 using LiveLesson.WEB.ViewModels.User;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -34,6 +36,7 @@ namespace LiveLesson.WEB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("")]
+        [Authorize]
         public IHttpActionResult GetAll()
         {
             var usersDto = userService.GetAll();
@@ -43,11 +46,27 @@ namespace LiveLesson.WEB.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("me")]
+        [Authorize]
+        public IHttpActionResult Get()
+        {
+            var profileId = User.Identity.GetUserId();
+            var userDto = userService.GetByProfileId(profileId);
+            var userViewModel = mapper.Map<UserViewModel>(userDto);
+
+            return Ok(userViewModel);
+        }
+
+        /// <summary>
         /// Gets user by specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet, Route("{id:int}")]
+        [Authorize]
         public IHttpActionResult Get(int id)
         {
                 var userDto = userService.Get(id);
@@ -59,14 +78,22 @@ namespace LiveLesson.WEB.Controllers
         /// <summary>
         /// Edits the specified user view model.
         /// </summary>
-        /// <param name="userViewModel">The user view model.</param>
+        /// <param name="updateUserViewModel">The user view model.</param>
         /// <returns></returns>
         [HttpPut, Route("")]
-        public IHttpActionResult Edit(UserViewModel userViewModel)
+        [Authorize]
+        public IHttpActionResult Edit(UpdateUserViewModel updateUserViewModel)
         {
+            var currentUser = userService.GetByProfileId(User.Identity.GetUserId());
+
+            if (currentUser == null || currentUser.Id != updateUserViewModel.Id)
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
+
             if (ModelState.IsValid)
             {
-                var userDto = mapper.Map<UserDto>(userViewModel);
+                var userDto = mapper.Map<UserDto>(updateUserViewModel);
                 userService.Edit(userDto);
 
                 return Ok();

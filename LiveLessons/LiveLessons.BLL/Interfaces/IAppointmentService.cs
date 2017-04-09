@@ -7,6 +7,7 @@ namespace LiveLessons.BLL.Interfaces
     {
         AppointmentDto Get(int id);
         IEnumerable<AppointmentDto> GetAll();
+        IEnumerable<AppointmentDto> GetByProfileId(string profileId);
         void Create(AppointmentDto appointmentDto);
         void Edit(AppointmentDto appointmentDto);
         void Delete(int id);

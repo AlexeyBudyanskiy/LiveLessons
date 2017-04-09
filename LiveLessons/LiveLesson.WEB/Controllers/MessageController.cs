@@ -5,6 +5,7 @@ using AutoMapper;
 using LiveLesson.WEB.ViewModels.Message;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace LiveLesson.WEB.Controllers
 {
@@ -17,8 +18,6 @@ namespace LiveLesson.WEB.Controllers
     {
         private readonly IMessageService messageService;
         private readonly IMapper mapper;
-
-        private string _testProfileId = "profileId";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageController"/> class.
@@ -37,6 +36,7 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet, Route("{id:int}")]
+        [Authorize]
         public IHttpActionResult Get(int id)
         {
             var messageDto = messageService.Get(id);
@@ -51,10 +51,10 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="courseId">The course identifier.</param>
         /// <returns></returns>
         [HttpGet, Route("")]
+        [Authorize]
         public IHttpActionResult GetByCourseId(int courseId)
         {
-            // var profileId = User.Identity.GetUserId();
-            var profileId = _testProfileId;
+            var profileId = User.Identity.GetUserId();
             var messageDto = messageService.GetCourseConversation(courseId, profileId);
             var messageViewModel = mapper.Map<List<MessageViewModel>>(messageDto);
 
@@ -67,13 +67,13 @@ namespace LiveLesson.WEB.Controllers
         /// <param name="createMessageViewModel">The create message view model.</param>
         /// <returns></returns>
         [HttpPost, Route("")]
+        [Authorize]
         public IHttpActionResult Create(CreateMessageViewModel createMessageViewModel)
         {
             if (ModelState.IsValid)
             {
                 var messageDto = mapper.Map<MessageDto>(createMessageViewModel);
-                // var profileId = User.Identity.GetUserId();
-                var profileId = _testProfileId;
+                var profileId = User.Identity.GetUserId();
                 messageDto.Sender = new UserDto { ProfileId = profileId };
                 messageService.Create(messageDto);
 
@@ -81,19 +81,6 @@ namespace LiveLesson.WEB.Controllers
             }
 
             return BadRequest(ModelState);
-        }
-
-        /// <summary>
-        /// Deletes the specified message.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns></returns>
-        [HttpDelete, Route("{id:int}")]
-        public IHttpActionResult Delete(int id)
-        {
-            messageService.Delete(id);
-
-            return Ok();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Web.Http;
 using WebActivatorEx;
 using LiveLesson.WEB;
 using Swashbuckle.Application;
+using LiveLesson.WEB.Infrastructure;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -16,6 +17,7 @@ namespace LiveLesson.WEB
             GlobalConfiguration.Configuration 
                 .EnableSwagger(c =>
                     {
+                        c.DocumentFilter<AuthTokenOperation>();
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
@@ -53,14 +55,16 @@ namespace LiveLesson.WEB
                         // you'll need to implement a custom IDocumentFilter and/or IOperationFilter to set these properties
                         // according to your specific authorization implementation
                         //
-                        // c.BasicAuth("basic")
-                        //    .Description("Basic HTTP Authentication");
+
+                        c.BasicAuth("bearer")
+                           .Description("Basic HTTP Authentication");
+                        c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
 
                         // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
-                        // c.ApiKey("apiKey")
-                        //    .Description("API Key Authentication")
-                        //    .Name("apiKey")
-                        //    .In("header");
+                        c.ApiKey("Token")
+                           .Description("API Key Authentication")
+                           .Name("Authorization")
+                           .In("header");
                         //
                         // c.OAuth2("oauth2")
                         //    .Description("OAuth2 Implicit Grant")
@@ -96,7 +100,7 @@ namespace LiveLesson.WEB
                         // those comments into the generated docs and UI. You can enable this by providing the path to one or
                         // more Xml comment files.
                         //
-                        // c.IncludeXmlComments(GetXmlCommentsPath());
+                        //c.IncludeXmlComments(GetXmlCommentsPath());
 
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
@@ -238,7 +242,7 @@ namespace LiveLesson.WEB
                         // If your API supports ApiKey, you can override the default values.
                         // "apiKeyIn" can either be "query" or "header"
 
-                        // c.EnableApiKeySupport("apiKey", "header");
+                         c.EnableApiKeySupport("Authorization", "header");
                     });
         }
     }
