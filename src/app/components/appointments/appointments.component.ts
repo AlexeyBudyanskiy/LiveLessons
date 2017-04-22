@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { Appointment } from '../../models/appointment';
 import { AppointmentService }         from '../../services/appointment.service';
+import myGlobals = require('../../global');
 
 @Component({
   selector: 'appointments',
@@ -12,10 +13,13 @@ import { AppointmentService }         from '../../services/appointment.service';
 
 export class AppointmentsComponent implements OnInit {
   appointments: Appointment[];
+  host: string;
 
   constructor(
     private appointmentService: AppointmentService,
-    private router: Router) { }
+    private router: Router) {
+      this.host = myGlobals.host;
+     }
 
   getAppointments(): void {
     this.appointmentService.getAppointments().subscribe(appointments => this.appointments = appointments.json());

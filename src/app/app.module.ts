@@ -5,6 +5,7 @@ import { HttpModule }    from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent }         from './app.component';
+import { MainComponent }   from './components/main/main.component';
 import { CoursesComponent }   from './components/courses/courses.component';
 import { CourseDetailComponent }   from './components/course-detail/course-detail.component';
 import { AppointmentsComponent }   from './components/appointments/appointments.component';
@@ -21,6 +22,7 @@ import { AppointmentService }      from './services/appointment.service';
   ],
   declarations: [
     AppComponent,
+    MainComponent,
     CoursesComponent,
     CourseDetailComponent,
     AppointmentsComponent   

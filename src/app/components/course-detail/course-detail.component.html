@@ -1,7 +1,7 @@
 <!-- Start About Us Section -->
-<div class="section-modal modal fade" id="about-modal" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="course">
+<div class="section-modal" id="about-modal" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="course">
     <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
+        <div class="close-modal" data-dismiss="modal"  routerLink="">
             <div class="lr">
                 <div class="rl">
                 </div>
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="about-text">
                         <p>{{course.Description}}</p>
                         <div class="row">
@@ -41,7 +41,7 @@
 
             <div class="row">
                 <div class="col-md-6 col-sm-6">
-                    <img src="images/courses/course-coocking.jpg" class="img-responsive" alt="">
+                    <img src="{{host}}content/images/{{course.Photo}}" class="img-responsive" alt="">
                 </div>
                 <div class="col-md-6">
                     <div class="custom-tab">

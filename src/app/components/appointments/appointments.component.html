@@ -1,6 +1,6 @@
-<div class="section-modal modal fade" id="portfolio-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="section-modal" id="portfolio-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
+        <div class="close-modal" data-dismiss="modal"  routerLink="">
             <div class="lr">
                 <div class="rl">
                 </div>
@@ -18,11 +18,11 @@
                 <div class="col-md-4" *ngFor="let appointment of appointments">
                     <h4 class="text-center down-header">{{appointment.Course.Name}}</h4>
                     <div class="portfolio-item">
-                        <img src="images/portfolio/1.png" class="img-responsive" alt="...">
+                        <img src="{{host}}content/images/{{appointment.Course.Photo}}" class="img-responsive" alt="...">
                         <div class="portfolio-details text-center">
                             <h4>{{appointment.Student.Name}}</h4>
                             <h4>{{appointment.Datetime}}</h4>
-                            <a href="#"><i class="fa fa-link"></i></a>
+                            <a href="course/{{appointment.Course.Id}}"><i class="fa fa-link"></i></a>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ import { Course } from '../../models/course';
 import { CourseService } from '../../services/course.service';
 
 import 'rxjs/add/operator/toPromise';
+import myGlobals = require('../../global');
 
 @Component({
   selector: 'course',
@@ -21,12 +22,14 @@ export class CourseDetailComponent implements OnInit {
   public course: Course;
   private id: number;
   private subscription: Subscription;
+  host: string;
 
   constructor(
     private courseService: CourseService,
     private route: ActivatedRoute,
     private location: Location) { 
       this.subscription = route.params.subscribe(params=>this.id=params['id']);
+      this.host = myGlobals.host;
     }
 
   getCourses(): void {

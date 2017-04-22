@@ -1,38 +1,38 @@
 <!-- Start Latest News Section -->
-        <div class="section-modal modal fade" id="news-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
+<div class="section-modal" id="news-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal" routerLink="">
+            <div class="lr">
+                <div class="rl">
                 </div>
-                
-                <div class="container">
-                    <div class="row">
-                        <div class="section-title text-center">
-                            <h3>Courses</h3>
-                            <p>Nearest courses</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" *ngFor="let course of courses">
-                            <div class="latest-post">
-                                <img src="images/courses/course-coocking.jpg" class="img-responsive" alt="">
-                                <h4><a href="course/{{course.Id}}">{{course.Name}}</a></h4>
-                                <div class="post-details">
-                                    <ul>
-                                        <li><i class="fa fa-user"></i> Author : {{course.Teacher.Name}}</li>
-                                        <li><i class="fa fa-star"></i> {{course.Rate}}</li>
-                                        <li><i class="fa fa-credit-card"></i>${{course.Price}}</li>
-                                    </ul>
-                                </div>
-                                <p>{{course.Description}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
             </div>
         </div>
-        <!-- End Latest News Section -->
+
+        <div class="container">
+            <div class="row">
+                <div class="section-title text-center">
+                    <h3>Courses</h3>
+                    <p>Nearest courses</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6" *ngFor="let course of courses">
+                    <div class="latest-post">
+                        <img src="{{host}}content/images/{{course.Photo}}" class="img-responsive" alt="">
+                        <h4><a href="course/{{course.Id}}">{{course.Name}}</a></h4>
+                        <div class="post-details">
+                            <ul>
+                                <li><i class="fa fa-user"></i> Author : {{course.Teacher.Name}}</li>
+                                <li><i class="fa fa-star"></i> {{course.Rate}}</li>
+                                <li><i class="fa fa-credit-card"></i>${{course.Price}}</li>
+                            </ul>
+                        </div>
+                        <p>{{course.Description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Latest News Section -->
