@@ -1,0 +1,97 @@
+<!-- Start About Us Section -->
+<div class="section-modal modal fade" id="about-modal" tabindex="-1" role="dialog" aria-hidden="true" *ngIf="course">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+                <div class="rl">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="section-title text-center">
+                    <h3>{{course.Name}}</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="about-text">
+                        <p>{{course.Description}}</p>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6">
+                                <ul>
+                                    <li><i class="fa fa-user"></i> Author : {{course.Teacher.Name}}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <ul>
+                                    <li><i class="fa fa-star"></i> Rate: {{course.Rate}}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <ul>
+                                    <li><i class="fa fa-credit-card"></i>Price: ${{course.Price}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <img src="images/courses/course-coocking.jpg" class="img-responsive" alt="">
+                </div>
+                <div class="col-md-6">
+                    <div class="custom-tab">
+
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li class="active"><a href="#tab-1" role="tab" data-toggle="tab">Message</a></li>
+                            <li><a href="#tab-2" role="tab" data-toggle="tab">Appointments</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="tab-1">
+                                <form name="sentMessage" id="contactForm" novalidate>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea class="form-control" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                                                <p class="help-block text-danger"></p>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-lg-12 text-center">
+                                            <div id="success"></div>
+                                            <button type="submit" class="btn btn-primary">Send Message</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div class="tab-pane" id="tab-2">
+                                <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id
+                                    quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+                                </p>
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
+                                    non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum
+                                    et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. At vero eos
+                                    et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate
+                                    non provident.</p>
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End About Us Section -->
