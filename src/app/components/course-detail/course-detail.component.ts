@@ -6,7 +6,9 @@ import { Location } from '@angular/common';
 import {Subscription} from 'rxjs/Subscription';
 
 import { Course } from '../../models/course';
+import { CreateAppointment } from '../../models/create-appointment';
 import { CourseService } from '../../services/course.service';
+import { AppointmentService } from '../../services/appointment.service';
 
 import 'rxjs/add/operator/toPromise';
 import myGlobals = require('../../global');
@@ -23,9 +25,11 @@ export class CourseDetailComponent implements OnInit {
   private id: number;
   private subscription: Subscription;
   host: string;
+  appointment: CreateAppointment;
 
   constructor(
     private courseService: CourseService,
+    private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private location: Location) { 
       this.subscription = route.params.subscribe(params=>this.id=params['id']);
@@ -34,7 +38,15 @@ export class CourseDetailComponent implements OnInit {
 
   getCourses(): void {
     this.courseService.getCourse(this.id)
-    .subscribe(res => this.course = res.json());
+    .subscribe(res => {
+      this.course = res.json();
+      this.appointment = new CreateAppointment();
+      this.appointment.CourseId = this.course.Id;
+    });
+  }
+
+  createAppointment(){
+    this.appointmentService.create(this.appointment);
   }
 
   ngOnInit(): void {

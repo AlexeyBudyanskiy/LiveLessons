@@ -1,22 +1,51 @@
-import { Injectable }    from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
 import { Appointment } from '../models/appointment';
+import { CreateAppointment } from '../models/create-appointment';
+import myGlobals = require('../global');
+import { CookieService } from '../services/cookie.service';
+import { Router } from '@angular/router';
+import { AccountService } from '../services/account.service';
 
 @Injectable()
 export class AppointmentService {
-  
-  private headers = new Headers({'Content-Type': 'application/json'});
-  private appointmentsUrl = 'http://localhost:49558/api/appointments';  // URL to web api
 
-  constructor(private http: Http) { }
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private host: string;
+  constructor(
+    private http: Http,
+    private cookieService: CookieService,
+    private accountService: AccountService,
+    private router: Router) {
+    this.host = myGlobals.host;
+  }
 
-  getAppointments(){
-    var result = this.http.get(this.appointmentsUrl);
-    
+  getAppointments() {
+    var url = `${this.host}api/appointments`
+    var result = this.http.get(url);
+
     return result;
+  }
+
+  create(createAppointment: CreateAppointment) {
+    var url = `${this.host}api/appointments`
+    var token = this.accountService.getToken();
+    var headers = new Headers({ 'Content-Type': 'application/json' });
+    headers.append("Authorization", token);
+
+    this.accountService.getUser().subscribe(user => {
+      createAppointment.StudentId = user.json().Id;
+
+      this.http.post(url, JSON.stringify(createAppointment), { headers })
+        .subscribe(response => {
+          if (response.ok) {
+            this.router.navigate([`appointments`]);
+          }
+        });
+    })
   }
 
   // getCourse(id: number): Promise<Course> {
