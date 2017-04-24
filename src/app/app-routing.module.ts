@@ -9,14 +9,16 @@ import { CourseDetailComponent }   from './components/course-detail/course-detai
 import { AppointmentsComponent }   from './components/appointments/appointments.component';
 import { SignInComponent }   from './components/sign-in/sign-in.component';
 import { SignUpComponent }   from './components/sign-up/sign-up.component';
+import { CreateCourseComponent }   from './components/create-course/create-course.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
+  { path: 'courses/new',  component: CreateCourseComponent },
   { path: 'courses',  component: CoursesComponent },
   { path: 'course/:id',  component: CourseDetailComponent },
   { path: 'appointments',  component: AppointmentsComponent },
   { path: 'signin',  component: SignInComponent },
-  { path: 'signup',  component: SignUpComponent }
+  { path: 'signup',  component: SignUpComponent },
 ];
 
 @NgModule({

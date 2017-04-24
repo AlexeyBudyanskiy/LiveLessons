@@ -27,6 +27,6 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp(){
-    this.accountService.register(this.register);
+    this.accountService.register(this.register, this.error);
   }
  }

@@ -11,6 +11,7 @@ import { CourseDetailComponent }   from './components/course-detail/course-detai
 import { AppointmentsComponent }   from './components/appointments/appointments.component';
 import { SignInComponent }   from './components/sign-in/sign-in.component';
 import { SignUpComponent }   from './components/sign-up/sign-up.component';
+import { CreateCourseComponent }   from './components/create-course/create-course.component';
 
 import { CourseService }      from './services/course.service';
 import { AppointmentService }      from './services/appointment.service';
@@ -32,7 +33,8 @@ import { CookieService }      from './services/cookie.service';
     CourseDetailComponent,
     AppointmentsComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    CreateCourseComponent
   ],
   providers: [
     CourseService,
