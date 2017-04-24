@@ -38,7 +38,7 @@ namespace LiveLesson.WEB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("")]
-        [Authorize]
+        //[Authorize]
         public IHttpActionResult GetAll()
         {
             var appointmentsDto = appointmentService.GetAll();

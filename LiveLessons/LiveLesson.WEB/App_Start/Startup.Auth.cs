@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using LiveLesson.WEB.Providers;
 using LiveLesson.WEB.Models;
+using Microsoft.Owin.Cors;
 
 namespace LiveLesson.WEB
 {
@@ -19,7 +20,7 @@ namespace LiveLesson.WEB
         {
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-
+            app.UseCors(CorsOptions.AllowAll);
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
