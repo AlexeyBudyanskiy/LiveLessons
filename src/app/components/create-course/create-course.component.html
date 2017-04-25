@@ -13,43 +13,40 @@
           <h3>Create course</h3>
         </div>
       </div>
-      <!--/.row -->
       <div class="row" style="padding-top: 80px;" *ngIf="createCourse">
         <div class="col-md-12">
-          <!--<form>-->
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <input [(ngModel)]="createCourse.Name" required pattern=".{3,}"
-                    type="text" class="form-control" placeholder="Name *" required data-validation-required-message="Please enter course name.">
-                  <p class="help-block text-danger" *ngIf="errorModel.Name">{{errorModel.Name}}</p>
-                  <!--<p class="help-block text-danger" [hidden]="createCourse.Name.valid || createCourse.Name.untouched">Invalid name</p>-->
-                </div>
-                <div class="form-group">
-                  <input [(ngModel)]="createCourse.Price" type="number" min="0" max="1000000" class="form-control" placeholder="Price *" required data-validation-required-message="Please enter your course price.">
-                  <p class="help-block text-danger" *ngIf="errorModel.Price">{{errorModel.Price}}</p>
-                </div>
-                <div class="form-group">
-                  <input [(ngModel)]="createCourse.Photo" accept="image/*" reuired type="file" class="form-control" placeholder="Photo" required data-validation-required-message="Please insert course photo.">
-                  <p class="help-block text-danger" *ngIf="errorModel.Photo">{{errorModel.Photo}}</p>
-                </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input [(ngModel)]="createCourse.Name" required pattern=".{3,}" type="text" class="form-control" placeholder="Name *" required
+                  data-validation-required-message="Please enter course name.">
+                <p class="help-block text-danger" *ngIf="errorModel.Name">{{errorModel.Name}}</p>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <textarea [(ngModel)]="createCourse.Description" class="form-control" placeholder="Description *" required data-validation-required-message="Please enter course description."></textarea>
-                  <p class="help-block text-danger"></p>
-                </div>
+              <div class="form-group">
+                <input [(ngModel)]="createCourse.Price" type="number" min="0" max="1000000" class="form-control" placeholder="Price *" required
+                  data-validation-required-message="Please enter your course price.">
+                <p class="help-block text-danger" *ngIf="errorModel.Price">{{errorModel.Price}}</p>
               </div>
-              <div class="clearfix"></div>
-              <div class="col-lg-12 text-center">
-                <div id="success"></div>
-                <button (click)="addCourse()" type="submit" class="btn btn-primary" [disabled]="createCourse.Name.invalid || createCourse.Price.invalid" >Create Course</button>
+              <div class="form-group">
+                <input [(ngModel)]="createCourse.Photo" accept="image/*" reuired type="file" class="form-control" placeholder="Photo" required
+                  data-validation-required-message="Please insert course photo.">
+                <p class="help-block text-danger" *ngIf="errorModel.Photo">{{errorModel.Photo}}</p>
               </div>
             </div>
-          <!--</form>-->
+            <div class="col-md-6">
+              <div class="form-group">
+                <textarea [(ngModel)]="createCourse.Description" class="form-control" placeholder="Description *" required data-validation-required-message="Please enter course description."></textarea>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 text-center">
+              <div id="success"></div>
+              <button (click)="addCourse()" type="submit" class="btn btn-primary">Create Course</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- End Contact Section -->

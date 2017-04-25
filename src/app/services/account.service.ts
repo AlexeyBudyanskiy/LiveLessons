@@ -10,6 +10,7 @@ import myGlobals = require('../global');
 import { CookieService } from './cookie.service';
 import { ErrorMessage } from '../models/errormessage';
 import { Observable } from 'rxjs/Observable';
+import { Token } from '../models/token'
 
 @Injectable()
 export class AccountService {
@@ -23,19 +24,27 @@ export class AccountService {
     this.host = myGlobals.host;
   }
 
-  createToken(login: Login) {
-    var request = `grant_type=password&username=${login.Email}&password=${login.Password}`
+  login(login: Login): Promise<Token> {
     var url = `${this.host}token`
     var headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    var requestBody = `grant_type=password&username=${login.Email}&password=${login.Password}`
 
-    this.http.post(url, request, { headers })
-      .subscribe(response => this.cookieService.setCookie('Token', response.json().access_token, 3));
+    return this.http.post(url, requestBody, { headers: headers })
+      .toPromise()
+      .then(response => {
+        var token = response.json() as Token;
+        this.cookieService.setCookie('Token', token.Token, 1)
 
-    //this.location.replaceState('/'); // clears browser history so they can't navigate with back button
-    this.router.navigate(['']);
+        return token;
+      })
+      .catch(this.handleError);
   }
 
-  register(register: Register, error: ErrorMessage) {
+  logout(): void {
+    this.cookieService.deleteCookie("Token");
+  }
+
+  register(register: Register) {
     var url = `${this.host}api/account/register`
     var headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append('method', 'post');
@@ -44,36 +53,69 @@ export class AccountService {
     login.Email = register.Email;
     login.Password = register.Password;
 
-    this.http.post(url, JSON.stringify(register), { headers })
-      .subscribe(
-        response => {
-        if (response.ok) {
-          this.createToken(login);
-          this.router.navigate(['']);
+    return this.http.post(url, JSON.stringify(register), { headers: headers })
+      .toPromise()
+      .then(response => {
+        this.login(login);
+        response.toString()
+      })
+      .catch(error => {
+        var errorObj: any;
+
+        try {
+          errorObj = JSON.parse(error._body).ModelState;
         }
-      }, 
-      err => error.Message = err.json().toString()) 
+        catch (ex) {
+          errorObj = { 'value': error._body }
+        };
+
+        return Promise.reject(errorObj || error);
+      });
   }
 
-  getUser(){
+  getUser() {
     var url = `${this.host}api/users/me`;
-    var token = this.getToken();
+    var token = "bearer " + this.getToken();
     var headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append("Authorization", token);
 
     var result = this.http.get(url, { headers });
-    
+
     return result;
   }
 
-  getToken(){
-    var token = "bearer " + this.cookieService.getCookie("Token");
+  getToken() {
+    var token = this.cookieService.getCookie("Token");
 
     return token;
   }
 
   private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+    console.error('An error occurred', error);
+
+    var errorObj: any;
+
+    try {
+      errorObj = { 'value': JSON.parse(error._body).error_description }
+    }
+    catch (ex) {
+      errorObj = { 'value': error._body }
+    };
+
+    return Promise.reject(errorObj || error);
   }
+
+
+
+  // createToken(login: Login) {
+  //   var request = `grant_type=password&username=${login.Email}&password=${login.Password}`
+  //   var url = `${this.host}token`
+  //   var headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+
+  //   this.http.post(url, request, { headers })
+  //     .subscribe(response => this.cookieService.setCookie('Token', response.json().access_token, 3));
+
+  //   //this.location.replaceState('/'); // clears browser history so they can't navigate with back button
+  //   this.router.navigate(['']);
+  // }
 }
