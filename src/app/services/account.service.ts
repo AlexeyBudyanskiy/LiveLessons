@@ -32,8 +32,8 @@ export class AccountService {
     return this.http.post(url, requestBody, { headers: headers })
       .toPromise()
       .then(response => {
-        var token = response.json() as Token;
-        this.cookieService.setCookie('Token', token.Token, 1)
+        var token = response.json();
+        this.cookieService.setCookie('Token', token.access_token, 10)
 
         return token;
       })
@@ -85,14 +85,12 @@ export class AccountService {
   }
 
   getToken() {
-    var token = this.cookieService.getCookie("Token");
+    var token = this.cookieService.getCookie('Token');
 
     return token;
   }
 
   private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-
     var errorObj: any;
 
     try {

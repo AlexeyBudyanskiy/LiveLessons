@@ -28,8 +28,8 @@
                 <p class="help-block text-danger" *ngIf="errorModel.Price">{{errorModel.Price}}</p>
               </div>
               <div class="form-group">
-                <input [(ngModel)]="createCourse.Photo" accept="image/*" reuired type="file" class="form-control" placeholder="Photo" required
-                  data-validation-required-message="Please insert course photo.">
+                <input id='new_course_photo' type="file" accept=".jpg,.png,.jpeg" class="form-control" placeholder="Photo"
+                  data-validation-required-message="Please insert course photo." enctype="multipart/form-data">
                 <p class="help-block text-danger" *ngIf="errorModel.Photo">{{errorModel.Photo}}</p>
               </div>
             </div>
