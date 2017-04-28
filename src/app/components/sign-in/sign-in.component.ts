@@ -14,6 +14,7 @@ export class SignInComponent implements OnInit {
   login: Login;
   errorModel = new Login();
   errorMessage: string;
+  loading: boolean=false;
 
   constructor(
     private accountService: AccountService,
@@ -30,11 +31,13 @@ export class SignInComponent implements OnInit {
   }
 
   signIn() {
+    this.loading = true;
     this.accountService.login(this.login)
       .then(token => this.router.navigate(['']))
       .catch(error => {
         this.errorMessage = error.value
         this.errorModel = error;
+        this.loading = false;
       });
   }
 }

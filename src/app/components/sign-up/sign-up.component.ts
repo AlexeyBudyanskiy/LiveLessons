@@ -13,9 +13,8 @@ import { AccountService } from '../../services/account.service';
 
 export class SignUpComponent implements OnInit {
   register = new Register();
-  errorModel: any;
-  errorMessage: string;
-
+  errors:any[];
+  loading: boolean=false;
 
   constructor(
     private accountService: AccountService,
@@ -31,10 +30,20 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    this.accountService.register(this.register)
+    this.loading = true;
+    this.accountService.register(this.register).then(c=>this.loading = false)
       .catch(error => {
-        this.errorMessage = error.value
-        this.errorModel = error;
+        this.readModelError(error);
+        this.loading = false
       });
+  }
+
+  readModelError(error: any) {
+    this.errors = [];
+    for (var key in error) {
+      for (var val in error[key]) {
+        this.errors.push(error[key][val]);
+      }
+    }
   }
 }

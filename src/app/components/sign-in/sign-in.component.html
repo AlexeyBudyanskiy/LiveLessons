@@ -1,15 +1,15 @@
 <!-- Start Logo Section -->
 <section id="logo-section" class="text-center">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="logo text-center">
-                    <h1>LiveLessons</h1>
-                    <span>Your Best Oportunity</span>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="logo text-center">
+					<h1>LiveLessons</h1>
+					<span>Your Best Oportunity</span>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 <!-- End Logo Section -->
 
@@ -24,13 +24,16 @@
 					<div class="form-group">
 						<label for="lg_username" class="sr-only">Username</label>
 						<input type="email" [(ngModel)]="login.Email" class="form-control" id="lg_username" name="lg_username" placeholder="username">
-						<p class="text-center help-block text-danger">{{errorModel.email}}</p>
+						<p class="text-center error-message">{{errorModel.email}}</p>
 					</div>
 					<div class="form-group">
 						<label for="lg_password" class="sr-only">Password</label>
 						<input type="password" [(ngModel)]="login.Password" class="form-control" id="lg_password" name="lg_password" placeholder="password">
-						<p class="text-center help-block text-danger">{{errorModel.password}}</p>
-                        <p class="text-center help-block text-danger">{{errorMessage}}</p>
+						<p class="text-center error-message">{{errorModel.password}}</p>
+						<p class="text-center error-message">{{errorMessage}}</p>
+						<div class="text-center" *ngIf="loading">
+							<i class='fa fa-circle-o-notch fa-spin'></i>
+						</div>
 					</div>
 					<div class="form-group login-group-checkbox">
 						<input type="checkbox" id="lg_remember" name="lg_remember">

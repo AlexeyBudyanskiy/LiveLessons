@@ -1,15 +1,15 @@
 <!-- Start Logo Section -->
 <section id="logo-section" class="text-center">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="logo text-center">
-                    <h1>LiveLessons</h1>
-                    <span>Your Best Oportunity</span>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="logo text-center">
+					<h1>LiveLessons</h1>
+					<span>Your Best Oportunity</span>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 <!-- End Logo Section -->
 
@@ -23,29 +23,28 @@
 					<div class="form-group">
 						<label for="reg_email" class="sr-only">Email</label>
 						<input [(ngModel)]="register.Email" type="text" class="form-control" id="reg_email" name="reg_email" placeholder="email">
-						<!--<p class="text-center help-block text-danger">{{errorModel.model.Email[0]}}</p>-->
 					</div>
 					<div class="form-group">
 						<label for="reg_password" class="sr-only">Password</label>
 						<input [(ngModel)]="register.Password" type="password" class="form-control" id="reg_password" name="reg_password" placeholder="password">
-						<p class="text-center help-block text-danger">{{errorModel['model.Password'][0]}}</p>
 					</div>
 					<div class="form-group">
 						<label for="reg_password_confirm" class="sr-only">Password Confirm</label>
-						<input [(ngModel)]="register.ConfirmPassword" type="password" class="form-control" id="reg_password_confirm" name="reg_password_confirm" placeholder="confirm password">
-						<!--<p class="text-center help-block text-danger">{{errorModel.model.ConfirmPassword[0]}}</p>-->
+						<input [(ngModel)]="register.ConfirmPassword" type="password" class="form-control" id="reg_password_confirm" name="reg_password_confirm"
+						 placeholder="confirm password">
 					</div>
 					<div class="form-group">
 						<label for="reg_fullname" class="sr-only">Full Name</label>
 						<input [(ngModel)]="register.Name" type="text" class="form-control" id="reg_fullname" name="reg_fullname" placeholder="full name">
-						<!--<p class="text-center help-block text-danger">{{errorModel.model.Name[0]}}</p>-->
 					</div>
-                    <div class="form-group">
+					<div class="form-group">
 						<label for="reg_age" class="sr-only">Age</label>
 						<input [(ngModel)]="register.Age" type="number" class="form-control" id="reg_age" name="reg_age" placeholder="age">
-						<!--<p class="text-center help-block text-danger">{{errorModel.model.Age[0]}}</p>-->
 					</div>
-					<p class="text-center help-block text-danger">{{errorMessage}}</p>
+					<p class="text-center error-message" *ngFor="let err of errors">{{err}}</p>
+					<div class="text-center" *ngIf="loading">
+						<i class='fa fa-circle-o-notch fa-spin'></i>
+					</div>
 				</div>
 				<button type="submit" (click)="signUp()" class="login-button"><i class="fa fa-chevron-right"></i></button>
 			</div>

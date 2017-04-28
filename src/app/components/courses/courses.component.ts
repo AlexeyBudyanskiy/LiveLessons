@@ -14,6 +14,7 @@ import myGlobals = require('../../global');
 export class CoursesComponent implements OnInit {
   courses: Course[];
   host: string;
+  loading: boolean=false;
 
   constructor(
     private courseService: CourseService,
@@ -22,7 +23,12 @@ export class CoursesComponent implements OnInit {
      }
 
   getCourses(): void {
-    this.courseService.getCourses().subscribe(courses => this.courses = courses.json());
+    this.loading = true;
+
+    this.courseService.getCourses().subscribe(courses => {
+      this.courses = courses.json();
+      this.loading = false;
+    });
   }
 
   ngOnInit(): void {
