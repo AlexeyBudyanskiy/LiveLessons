@@ -1,0 +1,50 @@
+<div class="section-modal" id="feature-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal" routerLink="">
+            <div class="lr">
+                <div class="rl">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="section-title text-center">
+                    <h3>Chat</h3>
+                </div>
+                <div class="text-center" *ngIf="loading">
+                    <i class='fa fa-circle-o-notch fa-spin'></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="form-group ">
+                        <textarea [(ngModel)]="message.Text"  class="form-control" placeholder="Your message *" required></textarea>
+                    </div>
+                </div>
+                <button (click)="sendMessage()" type="submit" class="btn btn-primary">Send</button>
+            </div>
+
+            <div class="container clearfix">
+                <div class="chat">
+                    <div class="chat-history">
+                        <ul class="chat-ul">
+                            <li class="clearfix" *ngFor="let message of messages">
+                                <div class="message-data" *ngIf="message.Sender.Id == 1">
+                                    <span class="message-data-name"><i class="fa fa-circle you"></i> You</span>
+                                </div>
+                                <div class="message you-message" *ngIf="message.Sender.Id == 1">
+                                    {{message.Text}}
+                                </div>
+
+                                <div class="message-data align-right" *ngIf="message.Sender.Id != 1">
+                                    <span class="message-data-name">{{message.Sender.Name}}</span> <i class="fa fa-circle me"></i>
+                                </div>
+                                <div class="message me-message float-right" *ngIf="message.Sender.Id != 1">{{message.Text}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

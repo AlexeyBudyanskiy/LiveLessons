@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { Login } from '../models/login';
 import { Register } from '../models/register';
-import myGlobals = require('../global');
+import globals = require('../global');
 import { CookieService } from './cookie.service';
 import { ErrorMessage } from '../models/errormessage';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +21,7 @@ export class AccountService {
     private cookieService: CookieService,
     private router: Router,
     private location: Location) {
-    this.host = myGlobals.host;
+    this.host = globals.host;
   }
 
   login(login: Login): Promise<Token> {
@@ -79,9 +79,7 @@ export class AccountService {
     var headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append("Authorization", token);
 
-    var result = this.http.get(url, { headers });
-
-    return result;
+    return this.http.get(url, { headers }).toPromise();
   }
 
   getToken() {
@@ -102,18 +100,4 @@ export class AccountService {
 
     return Promise.reject(errorObj || error);
   }
-
-
-
-  // createToken(login: Login) {
-  //   var request = `grant_type=password&username=${login.Email}&password=${login.Password}`
-  //   var url = `${this.host}token`
-  //   var headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-
-  //   this.http.post(url, request, { headers })
-  //     .subscribe(response => this.cookieService.setCookie('Token', response.json().access_token, 3));
-
-  //   //this.location.replaceState('/'); // clears browser history so they can't navigate with back button
-  //   this.router.navigate(['']);
-  // }
 }

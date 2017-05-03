@@ -1,58 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { AccountService } from '../../services/account.service';
 import { Appointment } from '../../models/appointment';
-import { AppointmentService }         from '../../services/appointment.service';
-import myGlobals = require('../../global');
+import { AppointmentService } from '../../services/appointment.service';
+import globals = require('../../global');
 
 @Component({
   selector: 'appointments',
   templateUrl: './appointments.component.html',
-  styleUrls: [ './appointments.component.css' ]
+  styleUrls: ['./appointments.component.css']
 })
 
 export class AppointmentsComponent implements OnInit {
-  appointments: Appointment[];
+  private appointments: Appointment[];
+  private loading: boolean = false;
   host: string;
 
   constructor(
     private appointmentService: AppointmentService,
-    private router: Router) {
-      this.host = myGlobals.host;
-     }
+    private router: Router,
+    private accountService: AccountService) {
+    this.host = globals.host;
+  }
 
   getAppointments(): void {
-    this.appointmentService.getAppointments().subscribe(appointments => this.appointments = appointments.json());
+    this.loading = true;
+    this.appointmentService.get().then(appointments => {
+      this.appointments = appointments.json();
+
+      this.loading = false;
+    });
   }
 
-//   add(name: string): void {
-//     name = name.trim();
-//     if (!name) { return; }
-//     this.courseService.create(name)
-//       .then(hero => {
-//         this.heroes.push(hero);
-//         this.selectedHero = null;
-//       });
-//   }
+  deleteAppointment(id: number) {
+    this.loading = true;
+    this.appointmentService.remove(id).then(() => this.router.navigate(['']))
+      .then(() => {
+        setTimeout(() => { this.router.navigate([`appointments`]) }, 500);
+        this.loading = false;
+      });
 
-//   delete(hero: Hero): void {
-//     this.courseService
-//         .delete(hero.id)
-//         .then(() => {
-//           this.heroes = this.heroes.filter(h => h !== hero);
-//           if (this.selectedHero === hero) { this.selectedHero = null; }
-//         });
-//   }
+  }
 
   ngOnInit(): void {
+    var token = this.accountService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/signin'])
+    }
+
     this.getAppointments();
   }
-
-//   onSelect(course: Course): void {
-//     this.selectedCourses = course;
-//   }
-
-//   gotoDetail(): void {
-//     this.router.navigate(['/detail', this.selectedCourse.id]);
-//   }
 }

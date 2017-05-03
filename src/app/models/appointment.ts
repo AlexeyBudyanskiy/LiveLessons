@@ -5,5 +5,5 @@ export class Appointment{
     Id: number;
     Student: User;
     Course: Course;
-    Datetime: Date;
+    DateTime: Date;
 }

@@ -13,16 +13,20 @@
                     <h3>Appointments</h3>
                     <p>Your nearest appointments</p>
                 </div>
+                <div class="text-center" *ngIf="loading">
+                    <i class='fa fa-circle-o-notch fa-spin'></i>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-4" *ngFor="let appointment of appointments">
                     <h4 class="text-center down-header">{{appointment.Course.Name}}</h4>
                     <div class="portfolio-item">
-                        <img src="{{host}}content/images/{{appointment.Course.Photo}}" class="img-responsive" alt="...">
+                        <img src="{{host}}content/images/{{appointment.Course.Photo}}" class="img-responsive img-standard" alt="...">
                         <div class="portfolio-details text-center">
                             <h4>{{appointment.Student.Name}}</h4>
-                            <h4>{{appointment.Datetime}}</h4>
+                            <h4>{{appointment.DateTime}}</h4>
                             <a href="course/{{appointment.Course.Id}}"><i class="fa fa-link"></i></a>
+                            <a (click)="deleteAppointment(appointment.Id)" class="pointer"><i class="fa fa-times"></i></a>
                         </div>
                     </div>
                 </div>

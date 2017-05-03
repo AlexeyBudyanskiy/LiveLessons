@@ -973,3 +973,12 @@ and (max-width : 991px) {
 .error-message {
     color: #e74c3c;
 }
+
+.img-standard{
+    width: 100%;
+    height: 20%;
+}
+
+.pointer{
+    cursor: pointer;
+}

@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="logo text-center">
                     <h1>LiveLessons</h1>
-                    <span>Your Best Oportunity</span>
+                    <span (click)="signOut()" class="pointer">Sign Out</span>
                 </div>
             </div>
         </div>
@@ -20,13 +20,13 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="menu-item blue">
-                    <a routerLink="/courses" href="#news-modal" data-toggle="modal">
+                    <a routerLink="courses" data-toggle="modal">
                         <i class="fa fa-mortar-board"></i>
                         <p>Courses</p>
                     </a>
                 </div>
                 <div class="menu-item green">
-                    <a routerLink="/appointments" href="#portfolio-modal" data-toggle="modal">
+                    <a routerLink="appointments" data-toggle="modal">
                         <i class="fa fa fa-user"></i>
                         <p>Appointments</p>
                     </a>
@@ -69,15 +69,15 @@
 
             <div class="col-md-3">
 
-                <div class="menu-item light-red">
+                <div class="menu-item light-red" routerLink="conversations">
                     <a href="#contact-modal" data-toggle="modal">
                         <i class="fa fa-envelope-o"></i>
-                        <p>Contact</p>
+                        <p>Conversations</p>
                     </a>
                 </div>
 
                 <div class="menu-item color">
-                    <a routerLink="/courses/new" data-toggle="modal">
+                    <a routerLink="/courses/my" data-toggle="modal">
                         <i class="fa fa fa-area-chart"></i>
                         <p>Profile</p>
                     </a>

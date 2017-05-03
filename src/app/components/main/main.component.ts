@@ -15,6 +15,11 @@ export class MainComponent implements OnInit {
     private router: Router) {
   }
 
+  signOut(){
+    this.accountService.logout();
+    this.router.navigate(['/signin']);
+  }
+
   ngOnInit(): void {
     var token = this.accountService.getToken();
 
