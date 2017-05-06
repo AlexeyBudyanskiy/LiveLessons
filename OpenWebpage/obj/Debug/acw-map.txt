@@ -1,0 +1,4 @@
+LiveLessons.OpenWebPageActivity, LiveLessons;md5b1ebedca5cc96aa9bdf0457acf8a7916.OpenWebPageActivity
+LiveLessons.OpenWebPageActivity, LiveLessons, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5b1ebedca5cc96aa9bdf0457acf8a7916.OpenWebPageActivity
+LiveLessons.OpenWebPageActivity;md5b1ebedca5cc96aa9bdf0457acf8a7916.OpenWebPageActivity
+livelessons.OpenWebPageActivity;md5b1ebedca5cc96aa9bdf0457acf8a7916.OpenWebPageActivity
