@@ -1,3 +1,3 @@
-export class ErrorMessage{
-    Message:string;
+export class ErrorMessage {
+    Message: string;
 }

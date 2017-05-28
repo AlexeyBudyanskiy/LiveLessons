@@ -35,11 +35,11 @@ export class CreateCourseComponent {
     this.loading = true;
     this.addFile().then(() => {
       let fi = (<any>$('#new_course_photo'))[0];
-      if(fi.files[0]){
+      if (fi.files[0]) {
         this.createCourse.Photo = fi.files[0].name;
         var coord = new Coord();
         coord.X = 10;
-        coord.Y  = 10;
+        coord.Y = 10;
 
         this.createCourse.Coords = coord;
       }

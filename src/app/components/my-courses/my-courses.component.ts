@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { Course } from '../../models/course';
 import { CourseService } from '../../services/course.service';
+import globals = require('../../global');
 
 @Component({
   selector: 'my-courses',
@@ -18,7 +19,9 @@ export class UserCoursesComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private accountService: AccountService,
-    private router: Router) { }
+    private router: Router) {
+    this.host = globals.host;
+  }
 
   getCourses(): void {
     this.loading = true;

@@ -10,6 +10,7 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { CreateCourseComponent } from './components/create-course/create-course.component';
+import { UpdateCourseComponent } from './components/update-course/update-course.component';
 import { UserCoursesComponent } from './components/my-courses/my-courses.component';
 import { ConversationsComponent } from './components/conversations/conversations.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -17,6 +18,7 @@ import { ChatComponent } from './components/chat/chat.component';
 const routes: Routes = [
   { path: '', component: MainComponent },
   { path: 'courses/new', component: CreateCourseComponent },
+  { path: 'courses/update/:id', component: UpdateCourseComponent },
   { path: 'courses/my', component: UserCoursesComponent },
   { path: 'courses', component: CoursesComponent },
   { path: 'course/:id', component: CourseDetailComponent },

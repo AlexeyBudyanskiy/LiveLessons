@@ -13,8 +13,8 @@ import { AccountService } from '../../services/account.service';
 
 export class SignUpComponent implements OnInit {
   register = new Register();
-  errors:any[];
-  loading: boolean=false;
+  errors: any[];
+  loading: boolean = false;
 
   constructor(
     private accountService: AccountService,
@@ -31,7 +31,11 @@ export class SignUpComponent implements OnInit {
 
   signUp() {
     this.loading = true;
-    this.accountService.register(this.register).then(c=>this.loading = false)
+    this.accountService.register(this.register)
+      .then(c => {
+        this.loading = false;
+        this.router.navigate(['']);
+      })
       .catch(error => {
         this.readModelError(error);
         this.loading = false

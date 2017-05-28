@@ -30,17 +30,17 @@
                     <div class="chat-history">
                         <ul class="chat-ul">
                             <li class="clearfix" *ngFor="let message of messages">
-                                <div class="message-data" *ngIf="message.Sender.Id == 1">
+                                <div class="message-data" *ngIf="message.Sender.Id == currentUser.Id">
                                     <span class="message-data-name"><i class="fa fa-circle you"></i> You</span>
                                 </div>
-                                <div class="message you-message" *ngIf="message.Sender.Id == 1">
+                                <div class="message you-message" *ngIf="message.Sender.Id == currentUser.Id">
                                     {{message.Text}}
                                 </div>
 
-                                <div class="message-data align-right" *ngIf="message.Sender.Id != 1">
+                                <div class="message-data align-right" *ngIf="message.Sender.Id != currentUser.Id">
                                     <span class="message-data-name">{{message.Sender.Name}}</span> <i class="fa fa-circle me"></i>
                                 </div>
-                                <div class="message me-message float-right" *ngIf="message.Sender.Id != 1">{{message.Text}}</div>
+                                <div class="message me-message float-right" *ngIf="message.Sender.Id != currentUser.Id">{{message.Text}}</div>
                             </li>
                         </ul>
                     </div>

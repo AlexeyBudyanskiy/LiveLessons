@@ -3,7 +3,6 @@ import { Headers, Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/toPromise';
-
 import { Login } from '../models/login';
 import { Register } from '../models/register';
 import globals = require('../global');

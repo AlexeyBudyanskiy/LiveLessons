@@ -12,7 +12,11 @@
             <div class="row">
                 <div class="section-title text-center">
                     <h3>Courses</h3>
-                    <p>Nearest courses</p>
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="form-group">
+                            <input [(ngModel)]="searchString" (blur)="search()" type="text" class="form-control" placeholder="Search">
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center" *ngIf="loading">
                     <i class='fa fa-circle-o-notch fa-spin'></i>

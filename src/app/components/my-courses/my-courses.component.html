@@ -32,6 +32,8 @@
                                 <li><i class="fa fa-user"></i> Author : {{course.Teacher.Name}}</li>
                                 <li><i class="fa fa-star"></i> {{course.Rate}}</li>
                                 <li><i class="fa fa-credit-card"></i>${{course.Price}}</li>
+                                <li></li>
+                                <li class="pointer" routerLink="../../courses/update/{{course.Id}}"><i class="fa fa-pencil"></i>Edit</li>
                             </ul>
                         </div>
                         <p>{{course.Description}}</p>

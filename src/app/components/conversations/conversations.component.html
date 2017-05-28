@@ -18,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-xs-12 pointer" *ngFor="let user of users" routerLink="../chat/{{user.Id}}">
-                    <div class="feature">
+                    <div class="feature" *ngIf="user.Id != currentUser.Id">
                         <i class="fa">{{user.Name[0]}}</i>
                         <div class="feature-content">
                             <h4>{{user.Name}}</h4>

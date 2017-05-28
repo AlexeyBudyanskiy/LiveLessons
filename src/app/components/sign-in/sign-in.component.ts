@@ -14,7 +14,7 @@ export class SignInComponent implements OnInit {
   login: Login;
   errorModel = new Login();
   errorMessage: string;
-  loading: boolean=false;
+  loading: boolean = false;
 
   constructor(
     private accountService: AccountService,

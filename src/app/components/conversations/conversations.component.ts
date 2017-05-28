@@ -12,6 +12,7 @@ import { MessageService } from '../../services/message.service';
 
 export class ConversationsComponent implements OnInit {
     private users: User[];
+    private currentUser: User;
     private host: string;
     private loading: boolean = false;
 
@@ -19,6 +20,7 @@ export class ConversationsComponent implements OnInit {
         private accountService: AccountService,
         private messageService: MessageService,
         private router: Router) {
+        this.accountService.getUser().then(res => this.currentUser = res.json());
     }
 
     getConversationUsers(): void {
@@ -26,6 +28,8 @@ export class ConversationsComponent implements OnInit {
 
         this.messageService.getConversationsUsers().subscribe(users => {
             this.users = users.json();
+            this.filterUsers();
+
             this.loading = false;
         });
     }
@@ -38,5 +42,13 @@ export class ConversationsComponent implements OnInit {
         }
 
         this.getConversationUsers();
+    }
+
+    filterUsers() {
+        for (var i = 0; i < this.users.length; i++) {
+            if (this.users[i].Id == this.currentUser.Id) {
+                this.users.splice(i, 1);
+            }
+        }
     }
 }

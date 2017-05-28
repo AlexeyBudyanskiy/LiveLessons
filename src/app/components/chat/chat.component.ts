@@ -21,6 +21,7 @@ export class ChatComponent implements OnInit {
     private loading: boolean = false;
     private subscription: Subscription;
     private companionId: number;
+    private currentUser: User;
 
     constructor(
         private messageService: MessageService,
@@ -30,6 +31,7 @@ export class ChatComponent implements OnInit {
         private location: Location,
         private accountService: AccountService) {
         this.subscription = route.params.subscribe(params => this.companionId = params['id']);
+        this.accountService.getUser().then(res => this.currentUser = res.json());
     }
 
     getMessages(id: number): void {
@@ -48,11 +50,14 @@ export class ChatComponent implements OnInit {
         this.messageService.sendMessage(this.message)
             .then(() => {
                 var newMessage = new Message();
-                newMessage.Reciever = this.messages[0].Reciever;
-                newMessage.Sender = this.messages[0].Sender;
+                newMessage.Reciever = this.getRecivier();
+                var sender = new User()
+                sender.Id = this.currentUser.Id;
+                newMessage.Sender = sender;
                 newMessage.Text = this.message.Text;
 
                 this.messages.unshift(newMessage);
+
                 this.loading = false;
             });
     }
@@ -64,5 +69,14 @@ export class ChatComponent implements OnInit {
             this.router.navigate(['/signin'])
         }
         this.getMessages(this.companionId);
+    }
+
+    getRecivier() {
+        for (var i = 0; i < this.messages.length; i++) {
+            if (this.messages[i].Reciever.Id != this.currentUser.Id) {
+                return this.messages[i].Reciever;
+            }
+            return this.messages[i].Sender;
+        }
     }
 }

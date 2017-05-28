@@ -1,7 +1,7 @@
 import { Coord } from './coord';
 import { User } from './user';
 
-export class Course{
+export class Course {
     Id: number;
     Name: string;
     Description: string;

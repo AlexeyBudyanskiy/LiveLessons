@@ -35,9 +35,15 @@ export class CourseService {
 
   getCourse(id: number) {
     const url = `${this.host}api/courses/${id}`;
-
-    //var result = this.http.get(url);
     var result = this.http.get(url);
+
+    return result;
+  }
+
+  search(searchString: string) {
+    var url = `${this.host}api/courses/search?coordX=10&coordY=10&searchString=${searchString}&page=0&itemsPerPage=100`
+    var result = this.http.get(url);
+
     return result;
   }
 
@@ -54,11 +60,23 @@ export class CourseService {
       .catch(this.handleError);
   }
 
+  update(updateCourse: CreateCourse): Promise<string> {
+    const url = `${this.host}api/courses`
+    var token = "bearer " + this.accountService.getToken();
+    var headers = new Headers({ 'Content-Type': 'application/json' });
+    headers.append("Authorization", token);
+
+    return this.http
+      .put(url, JSON.stringify(updateCourse), { headers: headers })
+      .toPromise()
+      .then(response => response.toString())
+      .catch(this.handleError);
+  }
+
   uploadFile(fileToUpload: any) {
     var url = `${this.host}api/courses/image`;
     var token = "bearer " + this.accountService.getToken();
     var headers = new Headers({ 'Authorization': token });
-    //headers.append('Content-Type', 'multipart/form-data')
     let input = new FormData();
     input.append("file", fileToUpload);
 

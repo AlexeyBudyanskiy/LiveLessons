@@ -55,8 +55,8 @@ export class CourseDetailComponent implements OnInit {
     this.message.RecieverId = this.course.Teacher.Id;
     this.messageService.sendMessage(this.message)
       .then(() => {
-        setTimeout(()=>{ this.router.navigate([`chat/${this.course.Teacher.Id}`]) }, 500);
-        this.loading = false;    
+        setTimeout(() => { this.router.navigate([`chat/${this.course.Teacher.Id}`]) }, 500);
+        this.loading = false;
       });
   }
 

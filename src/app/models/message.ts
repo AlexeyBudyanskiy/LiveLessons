@@ -1,9 +1,9 @@
 import { Course } from './course';
 import { User } from './user';
 
-export class Message{
+export class Message {
         Id: number;
-        Sender:User;
+        Sender: User;
         Reciever: User;
         DateTime: Date;
         Text: string;
