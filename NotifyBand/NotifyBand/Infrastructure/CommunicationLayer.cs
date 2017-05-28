@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -14,7 +15,13 @@ namespace NotifyBand.Infrastructure
 {
     public class CommunicationLayer
     {
-        private const string host = "http://localhost:49558";
+        private const string ConnectionStringName = "Host";
+        private static readonly string Host; 
+
+        static CommunicationLayer()
+        {
+            Host = ConfigurationManager.ConnectionStrings[ConnectionStringName].ConnectionString;
+        }
         public async Task<string> GetToken()
         {
             var credentials = GetCredentials();
@@ -81,7 +88,7 @@ namespace NotifyBand.Infrastructure
 
         private HttpRequestMessage BuildTokenRequestMessage(Credentials credentials)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{host}/token");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{Host}/token");
             var stringContent = $"grant_type=password&username={credentials.UserName}&password={credentials.Password}";
             requestMessage.Content = new StringContent(stringContent);
             requestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
@@ -92,7 +99,7 @@ namespace NotifyBand.Infrastructure
 
         private HttpRequestMessage BuildUserRequestMessage(string accessToken)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{host}/api/users/me");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Host}/api/users/me");
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
             requestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -101,7 +108,7 @@ namespace NotifyBand.Infrastructure
 
         private HttpRequestMessage BuildCoursesRequestMessage(string accessToken)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{host}/api/courses/my");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Host}/api/courses/my");
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
             requestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -110,7 +117,7 @@ namespace NotifyBand.Infrastructure
 
         private HttpRequestMessage BuildAppointmentsRequestMessage(string accessToken)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{host}/api/appointments/my");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{Host}/api/appointments/my");
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
             requestMessage.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 

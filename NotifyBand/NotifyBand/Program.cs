@@ -35,7 +35,7 @@ namespace NotifyBand
 
         private static bool ShowAdminPannel(string token, CommunicationLayer communicationLayer)
         {
-            ShowOneHourAppointments();
+            ShowOneDayAppointments();
             Console.WriteLine("-----------------------");
             Console.WriteLine("Choose action: ");
             Console.WriteLine("1 - Update user data");
@@ -70,15 +70,16 @@ namespace NotifyBand
             return false;
         }
 
-        public static void ShowOneHourAppointments()
+        public static void ShowOneDayAppointments()
         {
             var futureHoureAppointments = user.Appointments
-                    .Where(x => x.DateTime > DateTime.Now && (x.DateTime - DateTime.Now).Hours < 1)
+                    .Where(x => x.DateTime > (DateTime.Now - TimeSpan.FromHours(12)) 
+                        && (x.DateTime - DateTime.Now).Hours < 24)
                     .OrderBy(x => x.DateTime);
 
             if (futureHoureAppointments.Any())
             {
-                Console.WriteLine("Appointments in one hour: ");
+                Console.WriteLine("Appointments in one day: ");
 
                 foreach (var appointment in futureHoureAppointments)
                 {
@@ -123,14 +124,17 @@ namespace NotifyBand
             {
                 Thread.Sleep(4000);
 
-                var nearestAppointment = user.Appointments
+                if (user.Appointments != null && user.Appointments.Count > 0)
+                {
+                    var nearestAppointment = user.Appointments
                     .Where(x => x.DateTime > DateTime.Now)
                     .OrderBy(x => x.DateTime)
                     .FirstOrDefault();
 
-                if (nearestAppointment != null && (nearestAppointment.DateTime - DateTime.Now).Hours < 1)
-                {
-                    Console.Beep();
+                    if (nearestAppointment != null && (nearestAppointment.DateTime - DateTime.Now).Hours < 24)
+                    {
+                        Console.Beep();
+                    }
                 }
             }
         }
