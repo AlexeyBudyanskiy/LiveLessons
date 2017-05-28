@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
 using Microsoft.AspNet.Identity;
@@ -11,7 +10,9 @@ namespace LiveLesson.WEB.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(
+            UserManager<ApplicationUser> manager,
+            string authenticationType)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
 
@@ -23,8 +24,8 @@ namespace LiveLesson.WEB.Models
     {
         static ApplicationDbContext()
         {
-            Database
-                .SetInitializer(new ApplicationDbInitializer(DependencyResolver.Current.GetService<IUserService>()));
+            //Database
+            //    .SetInitializer(new ApplicationDbInitializer(DependencyResolver.Current.GetService<IUserService>()));
         }
 
         public ApplicationDbContext()

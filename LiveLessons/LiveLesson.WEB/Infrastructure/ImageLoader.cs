@@ -6,7 +6,7 @@ namespace LiveLesson.WEB.Infrastructure
 {
     public static class ImageLoader
     {
-        public static void SaveImage(HttpPostedFileBase file)
+        public static void SaveImage(HttpPostedFile file, string basePath)
         {
             var filename = Path.GetFileName(file.FileName);
 
@@ -15,22 +15,7 @@ namespace LiveLesson.WEB.Infrastructure
                 throw new ArgumentException("Invalid file type");
             }
 
-            if (filename != null)
-            {
-                file.SaveAs(Path.Combine(GlobalVariables.ImagePath, GenreateImageName(filename)));
-            }
-        }
-
-        private static string GenreateImageName(string imageName)
-        {
-            imageName = imageName.Replace(" ", "-");
-
-            if (File.Exists(GlobalVariables.ImagePath + imageName))
-            {
-                imageName = GenreateImageName(string.Concat("1", imageName));
-            }
-
-            return imageName;
+            file.SaveAs(Path.Combine(basePath + GlobalVariables.ImagePath, filename));
         }
 
         private static bool CheckImageExtenison(string imageName)

@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity;
 namespace LiveLesson.WEB.Controllers
 {
     /// <summary>
-    ///Controller for users manipulations
+    /// Controller for users manipulations
     /// </summary>
     /// <seealso cref="System.Web.Http.ApiController" />
     [RoutePrefix("api/users")]
@@ -69,10 +69,10 @@ namespace LiveLesson.WEB.Controllers
         [Authorize]
         public IHttpActionResult Get(int id)
         {
-                var userDto = userService.Get(id);
-                var userViewModel = mapper.Map<UserViewModel>(userDto);
+            var userDto = userService.Get(id);
+            var userViewModel = mapper.Map<UserViewModel>(userDto);
 
-                return Ok(userViewModel);
+            return Ok(userViewModel);
         }
 
         /// <summary>

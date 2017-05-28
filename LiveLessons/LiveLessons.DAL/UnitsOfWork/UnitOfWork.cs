@@ -21,13 +21,17 @@ namespace LiveLessons.DAL.UnitsOfWork
             databaseContext = new DatabaseContext(databaseConnectionString);
         }
 
-        public IRepository<User> Users => userRepository ?? (userRepository = new CommonRepository<User>(databaseContext));
+        public IRepository<User> Users => 
+            userRepository ?? (userRepository = new CommonRepository<User>(databaseContext));
 
-        public IRepository<Course> Courses => courseRepository ?? (courseRepository = new CommonRepository<Course>(databaseContext));
+        public IRepository<Course> Courses => 
+            courseRepository ?? (courseRepository = new CommonRepository<Course>(databaseContext));
 
-        public IRepository<Message> Messages => messageRepository ?? (messageRepository = new CommonRepository<Message>(databaseContext));
+        public IRepository<Message> Messages => 
+            messageRepository ?? (messageRepository = new CommonRepository<Message>(databaseContext));
 
-        public IRepository<Appointment> Appointments => appointmentRepository ?? (appointmentRepository = new CommonRepository<Appointment>(databaseContext));
+        public IRepository<Appointment> Appointments => 
+            appointmentRepository ?? (appointmentRepository = new CommonRepository<Appointment>(databaseContext));
 
         public void Save()
         {

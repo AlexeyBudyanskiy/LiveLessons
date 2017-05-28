@@ -60,6 +60,7 @@ namespace LiveLessons.BLL.Services
             {
                 throw new EntityNotFoundException($"There is no User with id { userDto.Id } in the database.", "User");
             }
+
             userDto.ProfileId = updatingUser.ProfileId;
             mapper.Map(userDto, updatingUser);
 

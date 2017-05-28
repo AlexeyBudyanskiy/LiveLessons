@@ -1,23 +1,25 @@
-﻿using Swashbuckle.Swagger;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Http.Description;
+using Swashbuckle.Swagger;
 
 namespace LiveLesson.WEB.Infrastructure
 {
-    class AuthTokenOperation : IDocumentFilter
+    public class AuthTokenOperation : IDocumentFilter
     {
         public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
         {
-            swaggerDoc.paths.Add("/token", new PathItem
-            {
-                post = new Operation
+            swaggerDoc.paths.Add(
+                "/token",
+                new PathItem
                 {
-                    tags = new List<string> {"Auth"},
-                    consumes = new List<string>
+                    post = new Operation
+                    {
+                        tags = new List<string> { "Auth" },
+                        consumes = new List<string>
                     {
                         "application/x-www-form-urlencoded"
                     },
-                    parameters = new List<Parameter>
+                        parameters = new List<Parameter>
                     {
                         new Parameter
                         {
@@ -41,8 +43,8 @@ namespace LiveLesson.WEB.Infrastructure
                             @in = "formData"
                         }
                     }
-                }
-            });
+                    }
+                });
         }
     }
 }

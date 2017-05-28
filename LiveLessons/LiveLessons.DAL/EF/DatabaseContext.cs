@@ -7,7 +7,7 @@ namespace LiveLessons.DAL.EF
     {
         static DatabaseContext()
         {
-            Database.SetInitializer(new StoreDbInitializer());
+            // Database.SetInitializer(new StoreDbInitializer());
         }
 
         public DatabaseContext(string connectionString) : base(connectionString)

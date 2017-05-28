@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Cors;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -25,7 +24,6 @@ namespace LiveLesson.WEB.Controllers
 {
     [System.Web.Http.Authorize]
     [System.Web.Http.RoutePrefix("api/Account")]
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
@@ -39,7 +37,7 @@ namespace LiveLesson.WEB.Controllers
 
         public AccountController(
             ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, 
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat,
             IUserService userService)
         {
             UserManager = userManager;
@@ -49,14 +47,8 @@ namespace LiveLesson.WEB.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                userManager = value;
-            }
+            get { return userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { userManager = value; }
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
@@ -81,6 +73,7 @@ namespace LiveLesson.WEB.Controllers
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+
             return Ok();
         }
 
@@ -130,10 +123,10 @@ namespace LiveLesson.WEB.Controllers
             }
 
             var result = await UserManager.ChangePasswordAsync(
-                User.Identity.GetUserId(), 
+                User.Identity.GetUserId(),
                 model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -175,8 +168,8 @@ namespace LiveLesson.WEB.Controllers
             var ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
 
             if (
-                ticket?.Identity == null 
-                || ticket.Properties?.ExpiresUtc != null 
+                ticket?.Identity == null
+                || ticket.Properties?.ExpiresUtc != null
                 && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow)
             {
                 return BadRequest("External login failure.");
@@ -261,16 +254,17 @@ namespace LiveLesson.WEB.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            var user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+            var user =
+                await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
 
             var hasRegistered = user != null;
 
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 var oAuthIdentity = await user.GenerateUserIdentityAsync(
-                     UserManager,
+
+                var oAuthIdentity = await user.GenerateUserIdentityAsync(
+                    UserManager,
                     OAuthDefaults.AuthenticationType);
                 var cookieIdentity = await user.GenerateUserIdentityAsync(
                     UserManager,
@@ -383,10 +377,12 @@ namespace LiveLesson.WEB.Controllers
             }
 
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
+
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
+
             return Ok();
         }
 
@@ -418,7 +414,7 @@ namespace LiveLesson.WEB.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error);
+                        ModelState.AddModelError(string.Empty, error);
                     }
                 }
 

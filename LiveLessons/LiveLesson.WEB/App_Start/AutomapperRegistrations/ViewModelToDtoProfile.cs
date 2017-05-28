@@ -17,7 +17,7 @@ namespace LiveLesson.WEB.AutomapperRegistrations
             CreateMap<CreateCourseViewModel, CourseDto>();
             CreateMap<MessageViewModel, MessageDto>();
             CreateMap<CreateMessageViewModel, MessageDto>()
-                .BeforeMap((model, dto) => dto.Course = new CourseDto { Id = model.CourseId })
+                //.BeforeMap((model, dto) => dto.Course = new CourseDto { Id = model.CourseId })
                 .BeforeMap((model, dto) => dto.Reciever = new UserDto { Id = model.RecieverId });
             CreateMap<AppointmentViewModel, AppointmentDto>();
             CreateMap<CreateAppointmentViewModel, AppointmentDto>()

@@ -8,3 +8,13 @@ D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.DAL\bin
 D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.DAL\obj\Debug\LiveLessons.DAL.csprojResolveAssemblyReference.cache
 D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.DAL\obj\Debug\LiveLessons.DAL.dll
 D:\My\Univer\Refactoring\LiveLessons\LiveLessons\LiveLessons\LiveLessons.DAL\obj\Debug\LiveLessons.DAL.pdb
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\LiveLessons.DAL.dll.config
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\LiveLessons.DAL.dll
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\LiveLessons.DAL.pdb
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\EntityFramework.dll
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\EntityFramework.SqlServer.dll
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\EntityFramework.xml
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\bin\Debug\EntityFramework.SqlServer.xml
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\obj\Debug\LiveLessons.DAL.csprojResolveAssemblyReference.cache
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\obj\Debug\LiveLessons.DAL.dll
+D:\Univer\Refactoring\BackEnd\LiveLessons\LiveLessons.DAL\obj\Debug\LiveLessons.DAL.pdb

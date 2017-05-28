@@ -64,10 +64,10 @@ namespace LiveLesson.WEB.Controllers
         [HttpGet, Route("{id:int}")]
         public IHttpActionResult Get(int id)
         {
-                var courseDto = courseService.Get(id);
-                var courseViewModel = mapper.Map<CourseViewModel>(courseDto);
+            var courseDto = courseService.Get(id);
+            var courseViewModel = mapper.Map<CourseViewModel>(courseDto);
 
-                return Ok(courseViewModel);
+            return Ok(courseViewModel);
         }
 
         /// <summary>
@@ -163,15 +163,14 @@ namespace LiveLesson.WEB.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Loads the image.
-        /// </summary>
-        /// <param name="file">The image.</param>
-        /// <returns></returns>
-        [HttpPost]
+        [HttpPost, Route("image")]
         [Authorize]
-        public IHttpActionResult LoadImage(HttpPostedFileBase file)
+        public IHttpActionResult LoadImage()
         {
+            var file = HttpContext.Current.Request.Files.Count > 0
+                ? HttpContext.Current.Request.Files[0]
+                : null;
+
             if (file == null)
             {
                 return NotFound();
@@ -179,7 +178,7 @@ namespace LiveLesson.WEB.Controllers
 
             try
             {
-                ImageLoader.SaveImage(file);
+                ImageLoader.SaveImage(file, HttpRuntime.AppDomainAppPath);
             }
             catch (ArgumentException)
             {

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using AutoMapper;
 using LiveLesson.WEB.ViewModels.Message;
+using LiveLesson.WEB.ViewModels.User;
 using LiveLessons.BLL.DTO;
 using LiveLessons.BLL.Interfaces;
 using Microsoft.AspNet.Identity;
@@ -61,6 +63,28 @@ namespace LiveLesson.WEB.Controllers
             return Ok(messageViewModel);
         }
 
+        [HttpGet, Route("user/{companionId:int}")]
+        [Authorize]
+        public IHttpActionResult GetByCompanionId(int companionId)
+        {
+            var profileId = User.Identity.GetUserId();
+            var messageDto = messageService.GetConversation(profileId, companionId);
+            var messageViewModel = mapper.Map<List<MessageViewModel>>(messageDto);
+
+            return Ok(messageViewModel);
+        }
+
+        [HttpGet, Route("users")]
+        [Authorize]
+        public IHttpActionResult GetMessageBox()
+        {
+            var profileId = User.Identity.GetUserId();
+            var userDtos = messageService.GetMessageBox(profileId);
+            var userViewModels = mapper.Map<List<UserViewModel>>(userDtos);
+
+            return Ok(userViewModels);
+        }
+
         /// <summary>
         /// Creates the specified message.
         /// </summary>
@@ -72,6 +96,7 @@ namespace LiveLesson.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                createMessageViewModel.DateTime = DateTime.UtcNow;
                 var messageDto = mapper.Map<MessageDto>(createMessageViewModel);
                 var profileId = User.Identity.GetUserId();
                 messageDto.Sender = new UserDto { ProfileId = profileId };

@@ -21,7 +21,9 @@ namespace LiveLesson.WEB.Infrastructure
             if (isAuthorized && !allowAnonymous)
             {
                 if (operation.parameters == null)
+                {
                     operation.parameters = new List<Parameter>();
+                }
 
                 operation.parameters.Add(new Parameter
                 {
